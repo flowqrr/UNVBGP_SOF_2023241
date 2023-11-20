@@ -12,8 +12,8 @@ using sof_feleves.Repository;
 namespace sof_feleves.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20231118204038_identity_db")]
-    partial class identity_db
+    [Migration("20231120194438_init")]
+    partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -23,6 +23,21 @@ namespace sof_feleves.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
+
+            modelBuilder.Entity("AppointmentSiteUser", b =>
+                {
+                    b.Property<string>("ApplicantsId")
+                        .HasColumnType("text");
+
+                    b.Property<string>("AppointmentsID")
+                        .HasColumnType("text");
+
+                    b.HasKey("ApplicantsId", "AppointmentsID");
+
+                    b.HasIndex("AppointmentsID");
+
+                    b.ToTable("AppointmentSiteUser");
+                });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
@@ -73,70 +88,6 @@ namespace sof_feleves.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetRoleClaims", (string)null);
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUser", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("text");
-
-                    b.Property<int>("AccessFailedCount")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("ConcurrencyStamp")
-                        .IsConcurrencyToken()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Email")
-                        .HasMaxLength(256)
-                        .HasColumnType("character varying(256)");
-
-                    b.Property<bool>("EmailConfirmed")
-                        .HasColumnType("boolean");
-
-                    b.Property<bool>("LockoutEnabled")
-                        .HasColumnType("boolean");
-
-                    b.Property<DateTimeOffset?>("LockoutEnd")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("NormalizedEmail")
-                        .HasMaxLength(256)
-                        .HasColumnType("character varying(256)");
-
-                    b.Property<string>("NormalizedUserName")
-                        .HasMaxLength(256)
-                        .HasColumnType("character varying(256)");
-
-                    b.Property<string>("PasswordHash")
-                        .HasColumnType("text");
-
-                    b.Property<string>("PhoneNumber")
-                        .HasColumnType("text");
-
-                    b.Property<bool>("PhoneNumberConfirmed")
-                        .HasColumnType("boolean");
-
-                    b.Property<string>("SecurityStamp")
-                        .HasColumnType("text");
-
-                    b.Property<bool>("TwoFactorEnabled")
-                        .HasColumnType("boolean");
-
-                    b.Property<string>("UserName")
-                        .HasMaxLength(256)
-                        .HasColumnType("character varying(256)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("NormalizedEmail")
-                        .HasDatabaseName("EmailIndex");
-
-                    b.HasIndex("NormalizedUserName")
-                        .IsUnique()
-                        .HasDatabaseName("UserNameIndex");
-
-                    b.ToTable("AspNetUsers", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
@@ -224,6 +175,28 @@ namespace sof_feleves.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("sof_feleves.Models.Appointment", b =>
+                {
+                    b.Property<string>("ID")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("MaxApplicants")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("ServiceID")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("ServiceID");
+
+                    b.ToTable("Appointments");
+                });
+
             modelBuilder.Entity("sof_feleves.Models.Service", b =>
                 {
                     b.Property<string>("ID")
@@ -238,6 +211,8 @@ namespace sof_feleves.Migrations
                         .HasColumnType("text");
 
                     b.HasKey("ID");
+
+                    b.HasIndex("HostID");
 
                     b.ToTable("Services");
 
@@ -268,6 +243,153 @@ namespace sof_feleves.Migrations
                         });
                 });
 
+            modelBuilder.Entity("sof_feleves.Models.SiteUser", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("text");
+
+                    b.Property<int>("AccessFailedCount")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Email")
+                        .HasMaxLength(256)
+                        .HasColumnType("character varying(256)");
+
+                    b.Property<bool>("EmailConfirmed")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("FirstName")
+                        .HasColumnType("text");
+
+                    b.Property<bool>("LockoutEnabled")
+                        .HasColumnType("boolean");
+
+                    b.Property<DateTimeOffset?>("LockoutEnd")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("NormalizedEmail")
+                        .HasMaxLength(256)
+                        .HasColumnType("character varying(256)");
+
+                    b.Property<string>("NormalizedUserName")
+                        .HasMaxLength(256)
+                        .HasColumnType("character varying(256)");
+
+                    b.Property<string>("PasswordHash")
+                        .HasColumnType("text");
+
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("text");
+
+                    b.Property<bool>("PhoneNumberConfirmed")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("SecurityStamp")
+                        .HasColumnType("text");
+
+                    b.Property<string>("SurName")
+                        .HasColumnType("text");
+
+                    b.Property<bool>("TwoFactorEnabled")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("UserName")
+                        .HasMaxLength(256)
+                        .HasColumnType("character varying(256)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NormalizedEmail")
+                        .HasDatabaseName("EmailIndex");
+
+                    b.HasIndex("NormalizedUserName")
+                        .IsUnique()
+                        .HasDatabaseName("UserNameIndex");
+
+                    b.ToTable("AspNetUsers", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "yoga_host1",
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "3ab54ec8-43fa-4460-8e59-1bf4eb25de0e",
+                            Email = "yoga@yoga.yoga",
+                            EmailConfirmed = false,
+                            FirstName = "Yoga",
+                            LockoutEnabled = false,
+                            NormalizedUserName = "YOGA",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "49fce046-55c5-45a2-b63b-98e5e20ec2d9",
+                            SurName = "Master",
+                            TwoFactorEnabled = false
+                        },
+                        new
+                        {
+                            Id = "dance_host1",
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "3f8083bd-8b9f-4177-83a0-0660fed2ad25",
+                            Email = "dance@dance.dance",
+                            EmailConfirmed = false,
+                            FirstName = "Dance",
+                            LockoutEnabled = false,
+                            NormalizedUserName = "DANCE",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "c1572c36-e0f2-47e6-994c-b17b53dd166f",
+                            SurName = "Master",
+                            TwoFactorEnabled = false
+                        },
+                        new
+                        {
+                            Id = "nail_host1",
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "fff85fba-2672-4695-9522-dcdbeabe2250",
+                            Email = "nail@nail.nail",
+                            EmailConfirmed = false,
+                            FirstName = "Nail",
+                            LockoutEnabled = false,
+                            NormalizedUserName = "NAIL",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "83493925-4102-4e25-af57-609509c34062",
+                            SurName = "Master",
+                            TwoFactorEnabled = false
+                        },
+                        new
+                        {
+                            Id = "chiropractor_host1",
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "02bd6c3f-27f3-4ebd-bec5-76e1f16f6c6c",
+                            Email = "chiropractor@chiropractor.chiropractor",
+                            EmailConfirmed = false,
+                            FirstName = "Chiropractor",
+                            LockoutEnabled = false,
+                            NormalizedUserName = "CHIROPRACTOR",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "40936ace-219f-4435-a80a-6ed9b784083b",
+                            SurName = "Master",
+                            TwoFactorEnabled = false
+                        });
+                });
+
+            modelBuilder.Entity("AppointmentSiteUser", b =>
+                {
+                    b.HasOne("sof_feleves.Models.SiteUser", null)
+                        .WithMany()
+                        .HasForeignKey("ApplicantsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("sof_feleves.Models.Appointment", null)
+                        .WithMany()
+                        .HasForeignKey("AppointmentsID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -279,7 +401,7 @@ namespace sof_feleves.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
+                    b.HasOne("sof_feleves.Models.SiteUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -288,7 +410,7 @@ namespace sof_feleves.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
+                    b.HasOne("sof_feleves.Models.SiteUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -303,7 +425,7 @@ namespace sof_feleves.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
+                    b.HasOne("sof_feleves.Models.SiteUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -312,11 +434,43 @@ namespace sof_feleves.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
+                    b.HasOne("sof_feleves.Models.SiteUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("sof_feleves.Models.Appointment", b =>
+                {
+                    b.HasOne("sof_feleves.Models.Service", "Service")
+                        .WithMany("Appointments")
+                        .HasForeignKey("ServiceID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Service");
+                });
+
+            modelBuilder.Entity("sof_feleves.Models.Service", b =>
+                {
+                    b.HasOne("sof_feleves.Models.SiteUser", "Host")
+                        .WithMany("HostedServices")
+                        .HasForeignKey("HostID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Host");
+                });
+
+            modelBuilder.Entity("sof_feleves.Models.Service", b =>
+                {
+                    b.Navigation("Appointments");
+                });
+
+            modelBuilder.Entity("sof_feleves.Models.SiteUser", b =>
+                {
+                    b.Navigation("HostedServices");
                 });
 #pragma warning restore 612, 618
         }

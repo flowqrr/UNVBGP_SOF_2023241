@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using sof_feleves.Models;
 using System.Diagnostics;
 
@@ -7,6 +8,8 @@ namespace sof_feleves.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly UserManager<SiteUser> _userManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
 
         public HomeController(ILogger<HomeController> logger)
         {
