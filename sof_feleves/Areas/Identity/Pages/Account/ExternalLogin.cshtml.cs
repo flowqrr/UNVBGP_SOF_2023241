@@ -18,6 +18,10 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using sof_feleves.Models;
+using Castle.Core.Internal;
+using Microsoft.CodeAnalysis;
+using Newtonsoft.Json;
+using System.Net;
 
 namespace sof_feleves.Areas.Identity.Pages.Account
 {
@@ -84,13 +88,43 @@ namespace sof_feleves.Areas.Identity.Pages.Account
 
             [Required]
             [StringLength(100)]
+            [Display(Name = "First Name")]
             public string FirstName { get; set; }
 
             [Required]
             [StringLength(100)]
+            [Display(Name = "Surname")]
             public string SurName { get; set; }
+
+            public string PictureUrl { get; set; }
+
+            public byte[] PictureData { get; set; }
+
+            public string PictureContentType { get; set; }
+
+            public string BytesAsString
+            {
+                get
+                {
+                    if (PictureData != null)
+                    {
+                        return Convert.ToBase64String(PictureData);
+                    }
+                    else return "";
+
+                }
+            }
         }
-        
+
+        public class MsMetaData
+        {
+            [JsonProperty("@odata.mediaContentType")]
+            public string odatamediaContentType { get; set; }
+            public string id { get; set; }
+            public int width { get; set; }
+            public int height { get; set; }
+        }
+
         public IActionResult OnGet() => RedirectToPage("./Login");
 
         public IActionResult OnPost(string provider, string returnUrl = null)
@@ -134,12 +168,31 @@ namespace sof_feleves.Areas.Identity.Pages.Account
                 ProviderDisplayName = info.ProviderDisplayName;
                 if (info.Principal.HasClaim(c => c.Type == ClaimTypes.Email))
                 {
+                    string firstName = info.Principal.FindFirstValue(ClaimTypes.GivenName);
+                    string surName = info.Principal.FindFirstValue(ClaimTypes.Surname);
+                    if (firstName.IsNullOrEmpty() && surName.IsNullOrEmpty())
+                    {
+                        firstName = info.Principal.FindFirstValue(ClaimTypes.Name);
+                    }
+
                     Input = new InputModel
                     {
                         Email = info.Principal.FindFirstValue(ClaimTypes.Email),
-                        FirstName = info.Principal.FindFirstValue(ClaimTypes.GivenName),
-                        SurName = info.Principal.FindFirstValue(ClaimTypes.Surname)
+                        FirstName = firstName,
+                        SurName = surName
                     };
+
+                    var id = info.Principal.FindFirstValue(ClaimTypes.NameIdentifier);
+                    if (info.ProviderDisplayName == "Microsoft")
+                    {
+                        var wc = new WebClient();
+                        wc.Headers.Add("Authorization", "Bearer " + info.AuthenticationTokens.FirstOrDefault().Value);
+                        Input.PictureData = wc.DownloadData($"https://graph.microsoft.com/beta/users/{id}/photo/$value");
+                        var metadata = wc.DownloadString($"https://graph.microsoft.com/beta/users/{id}/photo/");
+                        var mdjson = JsonConvert.DeserializeObject<MsMetaData>(metadata);
+                        Input.PictureContentType = mdjson.odatamediaContentType;
+                    }
+                    // TODO: facebook login get profile pic
                 }
                 return Page();
             }
@@ -161,6 +214,13 @@ namespace sof_feleves.Areas.Identity.Pages.Account
                 var user = CreateUser();
                 user.FirstName = Input.FirstName;
                 user.SurName = Input.SurName;
+
+                if (info.ProviderDisplayName == "Microsoft")
+                {
+                    user.ProfilePicData = Input.PictureData;
+                    user.ProfilePicContentType = Input.PictureContentType;
+                    user.EmailConfirmed = true;
+                }
 
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);

@@ -14,5 +14,8 @@ namespace sof_feleves.Models
 
         [NotMapped]
         public virtual ICollection<Appointment>? Appointments { get; set; }
+
+        public string? ProfilePicContentType { get; set; }
+        public byte[]? ProfilePicData { get; set; }
     }
 }

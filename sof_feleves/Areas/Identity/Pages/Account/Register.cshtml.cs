@@ -99,6 +99,9 @@ namespace sof_feleves.Areas.Identity.Pages.Account
 
             [Display(Name = "Register as a Host")]
             public bool IsHost { get; set; }
+
+            [Display(Name = "Profile picture")]
+            public IFormFile ProfilePicFile { get; set; }
         }
 
 
@@ -118,6 +121,14 @@ namespace sof_feleves.Areas.Identity.Pages.Account
 
                 user.FirstName = Input.FirstName;
                 user.SurName = Input.SurName;
+
+                user.ProfilePicContentType = Input.ProfilePicFile.ContentType;
+                byte[] data = new byte[(int)Input.ProfilePicFile.Length];
+                using (var stream = Input.ProfilePicFile.OpenReadStream())
+                {
+                    stream.Read(data, 0, data.Length);
+                }
+                user.ProfilePicData = data;
 
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
@@ -143,7 +154,7 @@ namespace sof_feleves.Areas.Identity.Pages.Account
                         protocol: Request.Scheme);
 
                     await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
-                        $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+                        $"Welcome to Hostie! In order to complete the registration, please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
 
                     if (_userManager.Options.SignIn.RequireConfirmedAccount)
                     {

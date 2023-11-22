@@ -26,11 +26,18 @@ builder.Services.AddDefaultIdentity<SiteUser>(options =>
 .AddRoles<IdentityRole>()
 .AddEntityFrameworkStores<AppDbContext>();
 
-builder.Services.AddAuthentication().AddFacebook(opt =>
-{
-    opt.AppId = "301078806230185";
-    opt.AppSecret = "b1489b45628dc2eddf6c6a3ef651192e";
-});
+builder.Services.AddAuthentication()
+    .AddFacebook(opt =>
+    {
+        opt.AppId = "301078806230185";
+        opt.AppSecret = "b1489b45628dc2eddf6c6a3ef651192e";
+    })
+    .AddMicrosoftAccount( opt =>
+    {
+        opt.ClientId = "536b9d75-52bd-41e5-9822-e2221a298400";
+        opt.ClientSecret = "BqF8Q~3VypE4Mc4js78ywHBbGJrFViTTpLCbWaE8";
+        opt.SaveTokens = true;
+    });
 
 builder.Services.AddTransient<IEmailSender, EmailSender>();
 

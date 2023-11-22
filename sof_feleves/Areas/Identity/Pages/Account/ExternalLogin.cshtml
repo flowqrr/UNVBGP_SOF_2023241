@@ -33,8 +33,12 @@
                 <label asp-for="Input.Email" class="form-label"></label>
                 <span asp-validation-for="Input.Email" class="text-danger"></span>
             </div>
+            <input type="hidden" asp-for="Input.PictureUrl" />
+            <input type="hidden" asp-for="Input.PictureData" />
+            <input type="hidden" asp-for="Input.PictureContentType" />
             <button type="submit" class="w-100 btn btn-lg btn-primary">Register</button>
         </form>
+        <img src="data:@Model.Input.PictureContentType;base64,@Model.Input.BytesAsString" />
     </div>
 </div>
 

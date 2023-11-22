@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity.UI.Services;
 using System.Net.Mail;
 using System.Net;
+using Microsoft.Extensions.Options;
 
 namespace sof_feleves.Services
 {
@@ -40,5 +41,4 @@ namespace sof_feleves.Services
             return Task.CompletedTask;
         }
     }
-
 }
