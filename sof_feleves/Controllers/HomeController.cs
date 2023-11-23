@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using sof_feleves.Migrations;
 using sof_feleves.Models;
 using System.Diagnostics;
 
@@ -11,13 +12,24 @@ namespace sof_feleves.Controllers
         private readonly UserManager<SiteUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, UserManager<SiteUser> userManager, RoleManager<IdentityRole> roleManager)
         {
             _logger = logger;
+            _userManager = userManager;
+            _roleManager = roleManager;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
+            var user = await _userManager.GetUserAsync(User);
+            if (user != null)
+            {
+                if (await _userManager.IsInRoleAsync(user, "Host"))
+                {
+                    return LocalRedirect("/Host/Dashboard");
+                }
+            }
+
             return View();
         }
 

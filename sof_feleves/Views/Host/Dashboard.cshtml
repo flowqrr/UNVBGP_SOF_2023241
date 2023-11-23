@@ -1,0 +1,37 @@
+﻿@model List<Service>
+
+<div>
+    <h2>Services</h2>
+</div>
+<div>
+    @if (Model == null || !Model.Any())
+    {
+        <p>You don't have any services yet. Start your journey by creating one!</p>
+    }
+    else
+    {
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var service in Model)
+                {
+                    <tr>
+                        <td>@service.Name</td>
+                        <td>@service.Description</td>
+                        <td>Add appointment / Add message / Edit details / Delete</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>
+
+<div>
+    <a asp-action="AddService" asp-controller="Host">Create a new Service</a>
+</div>

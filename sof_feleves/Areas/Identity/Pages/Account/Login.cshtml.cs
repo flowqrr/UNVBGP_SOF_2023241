@@ -22,11 +22,19 @@ namespace sof_feleves.Areas.Identity.Pages.Account
     {
         private readonly SignInManager<SiteUser> _signInManager;
         private readonly ILogger<LoginModel> _logger;
+        private readonly UserManager<SiteUser> _userManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
 
-        public LoginModel(SignInManager<SiteUser> signInManager, ILogger<LoginModel> logger)
+        public LoginModel(
+            SignInManager<SiteUser> signInManager,
+            ILogger<LoginModel> logger,
+            UserManager<SiteUser> userManager,
+            RoleManager<IdentityRole> roleManager)
         {
             _signInManager = signInManager;
             _logger = logger;
+            _userManager = userManager;
+            _roleManager = roleManager;
         }
 
         /// <summary>
@@ -104,6 +112,14 @@ namespace sof_feleves.Areas.Identity.Pages.Account
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User logged in.");
+
+                    var user = await _userManager.FindByEmailAsync(Input.Email);
+
+                    if (await _userManager.IsInRoleAsync(user, "Host"))
+                    {
+                        return LocalRedirect("/Host/Dashboard");
+                    }
+
                     return LocalRedirect(returnUrl);
                 }
                 if (result.RequiresTwoFactor)

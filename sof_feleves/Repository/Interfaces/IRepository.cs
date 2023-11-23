@@ -4,7 +4,7 @@
     {
         IQueryable<T> ReadAll();
         void Create(T item);
-        T Read(string id);
+        T? Read(string id);
         void Update(T item);
         void Delete(string id);
     }

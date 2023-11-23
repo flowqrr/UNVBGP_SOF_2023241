@@ -8,7 +8,7 @@ namespace sof_feleves.Repository
         {
         }
 
-        public override Service Read(string id)
+        public override Service? Read(string id)
         {
             return ctx.Services.FirstOrDefault(t => t.ID == id);
         }

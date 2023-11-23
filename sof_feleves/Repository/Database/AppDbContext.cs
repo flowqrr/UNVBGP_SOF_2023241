@@ -11,6 +11,7 @@ namespace sof_feleves.Repository
         public DbSet<SiteUser> Users { get; set; }
         public DbSet<Service> Services { get; set; }
         public DbSet<Appointment> Appointments { get; set; }
+        public DbSet<Post> Posts { get; set; }
         public AppDbContext(DbContextOptions<AppDbContext> options)
             : base(options)
         {
@@ -57,6 +58,12 @@ namespace sof_feleves.Repository
                 .HasMany(service => service.Appointments)
                 .WithOne(appointment => appointment.Service)
                 .HasForeignKey(appointment => appointment.ServiceID)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<Service>()
+                .HasMany(service => service.Posts)
+                .WithOne(post => post.Service)
+                .HasForeignKey(post => post.ServiceID)
                 .OnDelete(DeleteBehavior.Cascade);
 
             builder.Entity<SiteUser>()

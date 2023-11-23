@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
+using sof_feleves.Logic;
+using sof_feleves.Logic.Interfaces;
 using sof_feleves.Models;
 using sof_feleves.Repository;
 using sof_feleves.Services;
@@ -17,7 +19,8 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 builder.Services.AddDefaultIdentity<SiteUser>(options =>
 {
-    options.SignIn.RequireConfirmedAccount = true;
+    // TODO: turn on
+    options.SignIn.RequireConfirmedAccount = false;
     options.Password.RequireDigit = false;
     options.Password.RequiredLength = 4;
     options.Password.RequireNonAlphanumeric = false;
@@ -40,6 +43,10 @@ builder.Services.AddAuthentication()
     });
 
 builder.Services.AddTransient<IEmailSender, EmailSender>();
+
+builder.Services.AddTransient<IRepository<Service>, ServiceRepository>();
+
+builder.Services.AddTransient<IServiceLogic, ServiceLogic>();
 
 builder.Services.AddControllersWithViews();
 

@@ -122,13 +122,16 @@ namespace sof_feleves.Areas.Identity.Pages.Account
                 user.FirstName = Input.FirstName;
                 user.SurName = Input.SurName;
 
-                user.ProfilePicContentType = Input.ProfilePicFile.ContentType;
-                byte[] data = new byte[(int)Input.ProfilePicFile.Length];
-                using (var stream = Input.ProfilePicFile.OpenReadStream())
+                if (Input.ProfilePicFile != null)
                 {
-                    stream.Read(data, 0, data.Length);
+                    user.ProfilePicContentType = Input.ProfilePicFile.ContentType;
+                    byte[] data = new byte[(int)Input.ProfilePicFile.Length];
+                    using (var stream = Input.ProfilePicFile.OpenReadStream())
+                    {
+                        stream.Read(data, 0, data.Length);
+                    }
+                    user.ProfilePicData = data;
                 }
-                user.ProfilePicData = data;
 
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
@@ -163,6 +166,10 @@ namespace sof_feleves.Areas.Identity.Pages.Account
                     else
                     {
                         await _signInManager.SignInAsync(user, isPersistent: false);
+                        if (Input.IsHost)
+                        {
+                            return LocalRedirect("/Host/Dashboard");
+                        }
                         return LocalRedirect(returnUrl);
                     }
                 }
