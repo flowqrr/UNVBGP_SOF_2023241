@@ -36,6 +36,12 @@
             <input type="hidden" asp-for="Input.PictureUrl" />
             <input type="hidden" asp-for="Input.PictureData" />
             <input type="hidden" asp-for="Input.PictureContentType" />
+            <div class="checkbox">
+                <label asp-for="Input.IsHost" class="form-label">
+                    <input class="form-check-input" asp-for="Input.IsHost" />
+                    @Html.DisplayNameFor(m => m.Input.IsHost)
+                </label>
+            </div>
             <button type="submit" class="w-100 btn btn-lg btn-primary">Register</button>
         </form>
         <img src="data:@Model.Input.PictureContentType;base64,@Model.Input.BytesAsString" />

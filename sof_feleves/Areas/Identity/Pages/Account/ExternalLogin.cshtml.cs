@@ -96,6 +96,9 @@ namespace sof_feleves.Areas.Identity.Pages.Account
             [Display(Name = "Surname")]
             public string SurName { get; set; }
 
+            [Display(Name = "Register as a Host")]
+            public bool IsHost { get; set; }
+
             public string PictureUrl { get; set; }
 
             public byte[] PictureData { get; set; }
@@ -232,6 +235,11 @@ namespace sof_feleves.Areas.Identity.Pages.Account
                     if (result.Succeeded)
                     {
                         _logger.LogInformation("User created an account using {Name} provider.", info.LoginProvider);
+
+                        if (Input.IsHost)
+                        {
+                            await _userManager.AddToRoleAsync(user, "Host");
+                        }
 
                         var userId = await _userManager.GetUserIdAsync(user);
                         var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
