@@ -22,9 +22,13 @@
                 @foreach (var service in Model)
                 {
                     <tr>
-                        <td>@service.Name</td>
+                        <td>
+                            <a asp-action="ServiceEdit" asp-controller="Host" asp-route-id="@service.ID">
+                                @service.Name
+                            </a>
+                        </td>
                         <td>@service.Description</td>
-                        <td>Add appointment / Add message / Edit details / Delete</td>
+                        <td>Get shareable ID / <a href="/Host/DeleteService?id=@service.ID">Delete</td>
                     </tr>
                 }
             </tbody>

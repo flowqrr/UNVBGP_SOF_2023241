@@ -1,0 +1,166 @@
+﻿@model Service
+
+<h2>
+    <span id="serviceName">@Model.Name</span>
+    <button class="btn btn-link edit-btn"
+            data-toggle="modal"
+            data-target="#editNameModal"
+            data-service-id="@Model.ID">
+        Edit
+    </button>
+</h2>
+
+<div>
+    <h3>
+        Description
+        <button class="btn btn-link edit-btn"
+                data-toggle="modal"
+                data-target="#editDescriptionModal"
+                data-service-id="@Model.ID">
+            Edit
+        </button>
+    </h3>
+    <p><span id="serviceDescription">@Model.Description</span></p>
+</div>
+
+<div>
+    <h3>Posts</h3>
+    @if (Model.Posts != null)
+    {
+        <ul>
+            @foreach (var post in Model.Posts)
+            {
+                <li>
+                    <strong>@post.Title:</strong> @post.Text
+                </li>
+            }
+        </ul>
+    }
+    else
+    {
+        <p>No posts yet.</p>
+    }
+    <form asp-action="AddPost" asp-controller="Host" method="get">
+        <input type="hidden" name="serviceId" value="@Model.ID" />
+        <button type="submit" class="btn btn-primary">Add a post</button>
+    </form>
+</div>
+
+<div>
+    <h3>Appointments</h3>
+    @if (Model.Appointments != null)
+    {
+        <ul>
+            @foreach (var appointment in Model.Appointments)
+            {
+                <li>
+                    <strong>@appointment.Date:</strong>
+                </li>
+            }
+        </ul>
+    }
+    else
+    {
+        <p>No appointments available.</p>
+    }
+    <p>Add an appointment</p>
+</div>
+
+<!-- model for editing Name -->
+<div class="modal fade" id="editNameModal" tabindex="-1" role="dialog" aria-labelledby="editNameModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editNameModalLabel">Edit Name</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="editNameForm">
+                    <div class="form-group">
+                        <label for="newName">New Name:</label>
+                        <input type="text" class="form-control" id="newName" />
+                    </div>
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- model for editing Description -->
+<div class="modal fade" id="editDescriptionModal" tabindex="-1" role="dialog" aria-labelledby="editDescriptionModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editDescriptionModalLabel">Edit Description</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="editDescriptionForm">
+                    <div class="form-group">
+                        <label for="newDescription">New Description:</label>
+                        <textarea class="form-control" id="newDescription"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts {
+    <script>
+        $('.edit-btn').click(function () {
+            var serviceId = $(this).data('service-id');
+            $('#editNameModal, #editDescriptionModal').data('service-id', serviceId);
+        });
+
+        // handling for submission for Name editing
+        $('#editNameForm').submit(function (e) {
+            e.preventDefault();
+            var newName = $('#newName').val();
+            var serviceId = $('#editNameModal').data('service-id');
+
+            // making an AJAX request to update the name in the database
+            $.ajax({
+                url: '/Host/UpdateServiceName',
+                type: 'POST',
+                data: { id: serviceId, newName: newName },
+                success: function () {
+                    // updating the displayed name on success
+                    $('#serviceName').text(newName);
+                    $('#editNameModal').modal('hide');
+                },
+                error: function (error) {
+                    console.error('Error updating name:', error);
+                }
+            });
+        });
+
+        // handling form submission for Description editing
+        $('#editDescriptionForm').submit(function (e) {
+            e.preventDefault();
+            var newDescription = $('#newDescription').val();
+            var serviceId = $('#editDescriptionModal').data('service-id');
+
+            // making an AJAX request to update the description in the database
+            $.ajax({
+                url: '/Host/UpdateServiceDescription',
+                type: 'POST',
+                data: { id: serviceId, newDescription: newDescription },
+                success: function () {
+                    // updating the displayed description on success
+                    $('#serviceDescription').text(newDescription);
+                    $('#editDescriptionModal').modal('hide');
+                },
+                error: function (error) {
+                    console.error('Error updating description:', error);
+                }
+            });
+        });
+    </script>
+}

@@ -11,6 +11,9 @@ namespace sof_feleves.Models
 
         [Key]
         public string ID { get; set; }
+
+        [StringLength(100, MinimumLength = 2)]
+        public string Title { get; set; }
         public string Text { get; set; }
 
         public string ServiceID { get; set; }

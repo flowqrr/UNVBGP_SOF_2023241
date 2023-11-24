@@ -5,6 +5,7 @@ using sof_feleves.Logic;
 using sof_feleves.Logic.Interfaces;
 using sof_feleves.Models;
 using sof_feleves.Repository;
+using sof_feleves.Repository.Repositories;
 using sof_feleves.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -45,8 +46,10 @@ builder.Services.AddAuthentication()
 builder.Services.AddTransient<IEmailSender, EmailSender>();
 
 builder.Services.AddTransient<IRepository<Service>, ServiceRepository>();
+builder.Services.AddTransient<IRepository<Post>, PostRepository>();
 
 builder.Services.AddTransient<IServiceLogic, ServiceLogic>();
+builder.Services.AddTransient<IPostLogic, PostLogic>();
 
 builder.Services.AddControllersWithViews();
 

@@ -24,24 +24,31 @@ namespace sof_feleves.Logic
             _repository.Create(item);
         }
 
-        public void Delete(int id)
+        public void Delete(string id)
         {
-            throw new NotImplementedException();
+            _repository.Delete(id);
         }
 
-        public Service Read(int id)
+        public Service Read(string id)
         {
-            throw new NotImplementedException();
+            Service service = _repository.Read(id);
+
+            if (service == null)
+            {
+                throw new ArgumentException("Service does not exist");
+            }
+
+            return service;
         }
 
         public IQueryable<Service> ReadAll()
         {
-            throw new NotImplementedException();
+            return _repository.ReadAll();
         }
 
         public void Update(Service item)
         {
-            throw new NotImplementedException();
+            _repository.Update(item);
         }
     }
 }

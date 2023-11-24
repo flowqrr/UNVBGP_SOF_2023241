@@ -6,8 +6,8 @@ namespace sof_feleves.Logic.Interfaces
     public interface IServiceLogic
     {
         void Create(Service item);
-        void Delete(int id);
-        Service Read(int id);
+        void Delete(string id);
+        Service Read(string id);
         IQueryable<Service> ReadAll();
         void Update(Service item);
     }
