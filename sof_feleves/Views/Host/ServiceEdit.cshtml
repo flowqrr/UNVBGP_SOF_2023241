@@ -54,7 +54,11 @@
             @foreach (var appointment in Model.Appointments)
             {
                 <li>
-                    <strong>@appointment.Date:</strong>
+                    <strong>@appointment.Date:</strong> @appointment.MaxApplicants
+                    <!-- Display additional details of the appointment if needed -->
+                    <a href="/Host/EditAppointment?id=@appointment.ID" class="btn btn-secondary">Edit</a>
+                    <!-- Delete Button -->
+                    <a href="/Host/DeleteAppointment?id=@appointment.ID" class="btn btn-danger">Delete</a>
                 </li>
             }
         </ul>
@@ -63,7 +67,10 @@
     {
         <p>No appointments available.</p>
     }
-    <p>Add an appointment</p>
+    <form asp-action="AddAppointment" asp-controller="Host" method="get">
+        <input type="hidden" name="serviceId" value="@Model.ID" />
+        <button type="submit" class="btn btn-primary">Add an appointment</button>
+    </form>
 </div>
 
 <!-- model for editing Name -->

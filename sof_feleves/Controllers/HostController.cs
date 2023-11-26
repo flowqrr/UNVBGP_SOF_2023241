@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.CodeAnalysis;
+using sof_feleves.Logic;
 using sof_feleves.Logic.Interfaces;
 using sof_feleves.Models;
 using sof_feleves.Repository;
@@ -17,13 +18,15 @@ namespace sof_feleves.Controllers
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly IServiceLogic _serviceLogic;
         private readonly IPostLogic _postLogic;
+        private readonly IApointmentLogic _appointmentLogic;
 
         public HostController(
             ILogger<HostController> logger,
             UserManager<SiteUser> userManager,
             RoleManager<IdentityRole> roleManager,
             IServiceLogic serviceLogic,
-            IPostLogic postLogic
+            IPostLogic postLogic,
+            IApointmentLogic apointmentLogic
             )
         {
             _logger = logger;
@@ -31,6 +34,7 @@ namespace sof_feleves.Controllers
             _roleManager = roleManager;
             _serviceLogic = serviceLogic;
             _postLogic = postLogic;
+            _appointmentLogic = apointmentLogic;
         }
 
         public async Task<IActionResult> Dashboard()
@@ -103,20 +107,8 @@ namespace sof_feleves.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddPost(Post post, IFormFile imagedata)
+        public async Task<IActionResult> AddPost(Post post)
         {
-            if (imagedata != null)
-            {
-                using (var stream = imagedata.OpenReadStream())
-                {
-                    byte[] buffer = new byte[imagedata.Length];
-                    stream.Read(buffer, 0, (int)imagedata.Length);
-                    string filename = post.ID + "." + imagedata.FileName.Split('.')[1];
-                    post.ImageData = buffer;
-                    post.ImageContentType = imagedata.ContentType;
-                }
-            }
-
             try
             {
                 _postLogic.Create(post);
@@ -125,13 +117,70 @@ namespace sof_feleves.Controllers
             {
                 return View(post);
             }
+            return RedirectToAction("ServiceEdit", new { id = post.ServiceID });
+        }
 
-            return RedirectToAction(nameof(Dashboard));
+
+        [HttpPost]
+        public async Task<IActionResult> AddAppointment(Appointment appointment)
+        {
+
+                try
+                {
+                    var asd = appointment.ServiceID;
+                    _appointmentLogic.Create(appointment);
+
+                return RedirectToAction("ServiceEdit", new { id = appointment.ServiceID });
+            }
+                catch (ArgumentException ex)
+                {
+                    ModelState.AddModelError("", ex.Message);
+                }
+
+            return View(appointment);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditAppointment(Appointment appointment)
+        {
+                try
+                {
+                    _appointmentLogic.Update(appointment);
+
+                return RedirectToAction("ServiceEdit", new { id = appointment.ServiceID });
+            }
+                catch (Exception ex) // Consider more specific exception handling
+                {
+                    ModelState.AddModelError("", "There was an error updating the appointment.");
+                }
+            return View(appointment);
         }
 
         public IActionResult WriteMessage()
         {
             return View();
+        }
+        public IActionResult AddAppointment(string serviceId)
+        {
+            Appointment appointment = new Appointment();
+            appointment.ServiceID = serviceId;
+            return View(appointment);
+        }
+        public IActionResult EditAppointment(string id)
+        {
+            var appointment = _appointmentLogic.Read(id);
+            if (appointment == null)
+            {
+                return NotFound();
+            }
+            return View(appointment);
+        }
+        [HttpGet]
+        public IActionResult DeleteAppointment(string id)
+        {
+            Appointment appointment = _appointmentLogic.Read(id);
+            _appointmentLogic.Delete(id);
+            return RedirectToAction("ServiceEdit", new { id = appointment.ServiceID });
         }
 
         public IActionResult AddTimeSlot()
