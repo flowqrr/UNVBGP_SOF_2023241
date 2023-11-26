@@ -103,17 +103,17 @@ namespace sof_feleves.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddPost(Post post, IFormFile imagedata)
+        public async Task<IActionResult> AddPost(Post post)
         {
-            if (imagedata != null)
+            if (post.Image != null)
             {
-                using (var stream = imagedata.OpenReadStream())
+                using (var stream = post.Image.OpenReadStream())
                 {
-                    byte[] buffer = new byte[imagedata.Length];
-                    stream.Read(buffer, 0, (int)imagedata.Length);
-                    string filename = post.ID + "." + imagedata.FileName.Split('.')[1];
+                    byte[] buffer = new byte[post.Image.Length];
+                    stream.Read(buffer, 0, (int)post.Image.Length);
+                    string filename = post.ID + "." + post.Image.FileName.Split('.')[1];
                     post.ImageData = buffer;
-                    post.ImageContentType = imagedata.ContentType;
+                    post.ImageContentType = post.Image.ContentType;
                 }
             }
 
@@ -126,7 +126,13 @@ namespace sof_feleves.Controllers
                 return View(post);
             }
 
-            return RedirectToAction(nameof(Dashboard));
+            return RedirectToAction("ServiceEdit", new { id = post.ServiceID });
+        }
+
+        public IActionResult GetPostImage(string postid)
+        {
+            Post post = _postLogic.Read(postid);
+            return new FileContentResult(post.ImageData, post.ImageContentType);
         }
 
         public IActionResult WriteMessage()

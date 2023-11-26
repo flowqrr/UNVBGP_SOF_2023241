@@ -1,4 +1,9 @@
 ﻿@model List<Service>
+@using Microsoft.AspNetCore.Http.Extensions;
+@{
+    var request = ViewContext.HttpContext.Request;
+    var baseURL = $"{request.Scheme}://{request.Host}";
+}
 
 <div>
     <h2>Services</h2>
@@ -28,7 +33,9 @@
                             </a>
                         </td>
                         <td>@service.Description</td>
-                        <td>Get shareable ID / <a href="/Host/DeleteService?id=@service.ID">Delete</td>
+                        <td>
+                            <button class="get-link-btn btn btn-primary" onclick="copyToClipboard('@baseURL/Guest/ServiceView?id=@service.ID')"> Get shareable link for @service.Name</button> / <a href="/Host/DeleteService?id=@service.ID">Delete
+                        </td>
                     </tr>
                 }
             </tbody>
@@ -39,3 +46,17 @@
 <div>
     <a asp-action="AddService" asp-controller="Host">Create a new Service</a>
 </div>
+
+@section scripts {
+    <script>
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text)
+                .then(function () {
+                    alert("Link to your service copied to your clipboard! Now you can paste it wherever you want to share it :)");
+                })
+                .catch(function (err) {
+                    console.error('Unable to copy text to clipboard', err);
+                });
+        }
+    </script>
+}

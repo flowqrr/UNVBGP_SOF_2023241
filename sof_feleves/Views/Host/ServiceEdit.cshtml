@@ -31,6 +31,10 @@
             @foreach (var post in Model.Posts)
             {
                 <li>
+                    @if (post.ImageData != null)
+                    {
+                        <img src="@Url.Action("GetPostImage", "Host", new { postid = post.ID })" alt="Attached Image" style="max-width: 100px; max-height: 100px;" />
+                    }
                     <strong>@post.Title:</strong> @post.Text
                 </li>
             }

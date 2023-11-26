@@ -1,0 +1,54 @@
+﻿@model Service
+
+<h2>
+    <span id="serviceName">@Model.Name</span>
+</h2>
+
+<div>
+    <h3>
+        Description
+    </h3>
+    <p><span id="serviceDescription">@Model.Description</span></p>
+</div>
+
+<div>
+    <h3>Posts</h3>
+    @if (Model.Posts != null)
+    {
+        <ul>
+            @foreach (var post in Model.Posts)
+            {
+                <li>
+                    @if (post.ImageData != null)
+                    {
+                        <img src="@Url.Action("GetPostImage", "Host", new { postid = post.ID })" alt="Attached Image" style="max-width: 100px; max-height: 100px;" />
+                    }
+                    <strong>@post.Title:</strong> @post.Text
+                </li>
+            }
+        </ul>
+    }
+    else
+    {
+        <p>No posts yet.</p>
+    }
+</div>
+
+<div>
+    <h3>Appointments</h3>
+    @if (Model.Appointments != null)
+    {
+        <ul>
+            @foreach (var appointment in Model.Appointments)
+            {
+                <li>
+                    <strong>@appointment.Date:</strong>
+                </li>
+            }
+        </ul>
+    }
+    else
+    {
+        <p>No appointments available.</p>
+    }
+</div>

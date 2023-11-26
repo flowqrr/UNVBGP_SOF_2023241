@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.CodeAnalysis;
+using sof_feleves.Logic.Interfaces;
 using sof_feleves.Models;
 using System.Diagnostics;
 
@@ -11,17 +12,24 @@ namespace sof_feleves.Controllers
         private readonly ILogger<GuestController> _logger;
         private readonly UserManager<SiteUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly IServiceLogic _serviceLogic;
 
-        public GuestController(ILogger<GuestController> logger, UserManager<SiteUser> userManager, RoleManager<IdentityRole> roleManager)
+        public GuestController(
+            ILogger<GuestController> logger,
+            UserManager<SiteUser> userManager,
+            RoleManager<IdentityRole> roleManager,
+            IServiceLogic serviceLogic)
         {
             _logger = logger;
             _userManager = userManager;
             _roleManager = roleManager;
+            _serviceLogic = serviceLogic;
         }
 
-        public IActionResult VisitHost()
+        public IActionResult ServiceView(string id)
         {
-            return View();
+            Service service = _serviceLogic.Read(id);
+            return View(service);
         }
 
         public IActionResult ApplyForTimeSlot()
