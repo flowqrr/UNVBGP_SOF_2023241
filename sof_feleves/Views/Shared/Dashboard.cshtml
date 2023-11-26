@@ -1,0 +1,35 @@
+﻿@model List<Service>
+@using Microsoft.AspNetCore.Http.Extensions;
+@{
+    var request = ViewContext.HttpContext.Request;
+    var baseURL = $"{request.Scheme}://{request.Host}";
+}
+
+<div>
+    <h2>All services</h2>
+</div>
+<div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Location</th>
+                <th>Host</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var service in Model)
+            {
+                <tr>
+                    <td>
+                        <a href="@baseURL/Guest/ServiceView?id=@service.ID">@service.Name
+                    </td>
+                    <td>@service.Description</td>
+                    <td>@service.Location</td>
+                    <td>@service.Host.FirstName @service.Host.SurName</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

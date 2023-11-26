@@ -12,6 +12,13 @@
 </div>
 
 <div>
+    <h3>
+        Location
+    </h3>
+    <p><span id="serviceDescription">@Model.Location</span></p>
+</div>
+
+<div>
     <h3>Posts</h3>
     @if (Model.Posts != null)
     {
@@ -21,7 +28,7 @@
                 <li>
                     @if (post.ImageData != null)
                     {
-                        <img src="@Url.Action("GetPostImage", "Host", new { postid = post.ID })" alt="Attached Image" style="max-width: 100px; max-height: 100px;" />
+                        <img src="@Url.Action("GetPostImage", "Home", new { postid = post.ID })" alt="Attached Image" style="max-width: 100px; max-height: 100px;" />
                     }
                     <strong>@post.Title:</strong> @post.Text
                 </li>

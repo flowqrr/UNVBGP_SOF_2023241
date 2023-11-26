@@ -16,6 +16,7 @@ namespace sof_feleves.Models
         [StringLength(100, MinimumLength = 2)]
         public string Name { get; set; }
         public string? Description { get; set; }
+        public string? Location { get; set; }
 
         public string HostID { get; set; }
         public virtual SiteUser Host { get; set; }

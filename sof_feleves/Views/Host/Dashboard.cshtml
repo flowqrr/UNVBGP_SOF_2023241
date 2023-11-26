@@ -20,6 +20,7 @@
                 <tr>
                     <th>Name</th>
                     <th>Description</th>
+                    <th>Location</th>
                     <th>Actions</th>
                 </tr>
             </thead>
@@ -33,6 +34,7 @@
                             </a>
                         </td>
                         <td>@service.Description</td>
+                        <td>@service.Location</td>
                         <td>
                             <button class="get-link-btn btn btn-primary" onclick="copyToClipboard('@baseURL/Guest/ServiceView?id=@service.ID')"> Get shareable link for @service.Name</button> / <a href="/Host/DeleteService?id=@service.ID">Delete
                         </td>

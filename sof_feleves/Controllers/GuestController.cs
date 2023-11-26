@@ -26,6 +26,12 @@ namespace sof_feleves.Controllers
             _serviceLogic = serviceLogic;
         }
 
+        public async Task<IActionResult> Dashboard()
+        {
+            List<Service> services = _serviceLogic.ReadAll().ToList();
+            return View(services);
+        }
+
         public IActionResult ServiceView(string id)
         {
             Service service = _serviceLogic.Read(id);

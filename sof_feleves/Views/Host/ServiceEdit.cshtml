@@ -24,6 +24,19 @@
 </div>
 
 <div>
+    <h3>
+        Location
+        <button class="btn btn-link edit-btn"
+                data-toggle="modal"
+                data-target="#editLocationModal"
+                data-service-id="@Model.ID">
+            Edit
+        </button>
+    </h3>
+    <p><span id="serviceLocation">@Model.Location</span></p>
+</div>
+
+<div>
     <h3>Posts</h3>
     @if (Model.Posts != null)
     {
@@ -33,7 +46,7 @@
                 <li>
                     @if (post.ImageData != null)
                     {
-                        <img src="@Url.Action("GetPostImage", "Host", new { postid = post.ID })" alt="Attached Image" style="max-width: 100px; max-height: 100px;" />
+                        <img src="@Url.Action("GetPostImage", "Home", new { postid = post.ID })" alt="Attached Image" style="max-width: 100px; max-height: 100px;" />
                     }
                     <strong>@post.Title:</strong> @post.Text
                 </li>
@@ -116,11 +129,34 @@
     </div>
 </div>
 
+<!-- model for editing Location -->
+<div class="modal fade" id="editLocationModal" tabindex="-1" role="dialog" aria-labelledby="editLocationModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editLocationModalLabel">Edit Location</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="editLocationForm">
+                    <div class="form-group">
+                        <label for="newLocation">New Location:</label>
+                        <textarea class="form-control" id="newLocation"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
 @section scripts {
     <script>
         $('.edit-btn').click(function () {
             var serviceId = $(this).data('service-id');
-            $('#editNameModal, #editDescriptionModal').data('service-id', serviceId);
+            $('#editNameModal, #editDescriptionModal, #editLocationModal').data('service-id', serviceId);
         });
 
         // handling for submission for Name editing
@@ -163,6 +199,28 @@
                 },
                 error: function (error) {
                     console.error('Error updating description:', error);
+                }
+            });
+        });
+
+        // handling form submission for Location editing
+        $('#editLocationForm').submit(function (e) {
+            e.preventDefault();
+            var newLocation = $('#newLocation').val();
+            var serviceId = $('#editLocationModal').data('service-id');
+
+            // making an AJAX request to update the description in the database
+            $.ajax({
+                url: '/Host/UpdateServiceLocation',
+                type: 'POST',
+                data: { id: serviceId, newLocation: newLocation },
+                success: function () {
+                    // updating the displayed description on success
+                    $('#serviceLocation').text(newLocation);
+                    $('#editLocationModal').modal('hide');
+                },
+                error: function (error) {
+                    console.error('Error updating location:', error);
                 }
             });
         });

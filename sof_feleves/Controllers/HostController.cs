@@ -94,6 +94,15 @@ namespace sof_feleves.Controllers
             return Ok();
         }
 
+        [HttpPost]
+        public IActionResult UpdateServiceLocation(string id, string newLocation)
+        {
+            Service service = _serviceLogic.Read(id);
+            service.Location = newLocation;
+            _serviceLogic.Update(service);
+            return Ok();
+        }
+
         [HttpGet]
         public IActionResult AddPost(string serviceId)
         {
@@ -127,12 +136,6 @@ namespace sof_feleves.Controllers
             }
 
             return RedirectToAction("ServiceEdit", new { id = post.ServiceID });
-        }
-
-        public IActionResult GetPostImage(string postid)
-        {
-            Post post = _postLogic.Read(postid);
-            return new FileContentResult(post.ImageData, post.ImageContentType);
         }
 
         public IActionResult WriteMessage()
