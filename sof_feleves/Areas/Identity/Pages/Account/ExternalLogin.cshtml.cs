@@ -91,7 +91,6 @@ namespace sof_feleves.Areas.Identity.Pages.Account
             [Display(Name = "First Name")]
             public string FirstName { get; set; }
 
-            [Required]
             [StringLength(100)]
             [Display(Name = "Surname")]
             public string SurName { get; set; }
@@ -188,12 +187,20 @@ namespace sof_feleves.Areas.Identity.Pages.Account
                     var id = info.Principal.FindFirstValue(ClaimTypes.NameIdentifier);
                     if (info.ProviderDisplayName == "Microsoft")
                     {
-                        var wc = new WebClient();
-                        wc.Headers.Add("Authorization", "Bearer " + info.AuthenticationTokens.FirstOrDefault().Value);
-                        Input.PictureData = wc.DownloadData($"https://graph.microsoft.com/beta/users/{id}/photo/$value");
-                        var metadata = wc.DownloadString($"https://graph.microsoft.com/beta/users/{id}/photo/");
-                        var mdjson = JsonConvert.DeserializeObject<MsMetaData>(metadata);
-                        Input.PictureContentType = mdjson.odatamediaContentType;
+                        try
+                        {
+                            var wc = new WebClient();
+                            wc.Headers.Add("Authorization", "Bearer " + info.AuthenticationTokens.FirstOrDefault().Value);
+                            Input.PictureData = wc.DownloadData($"https://graph.microsoft.com/beta/users/{id}/photo/$value");
+                            var metadata = wc.DownloadString($"https://graph.microsoft.com/beta/users/{id}/photo/");
+                            var mdjson = JsonConvert.DeserializeObject<MsMetaData>(metadata);
+                            Input.PictureContentType = mdjson.odatamediaContentType;
+                        }
+                        catch (WebException ex)
+                        {
+                            Input.PictureData = null;
+                            Input.PictureContentType = null;
+                        }
                     }
                     // TODO: facebook login get profile pic
                 }

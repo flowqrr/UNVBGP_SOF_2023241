@@ -103,8 +103,20 @@ namespace sof_feleves.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddPost(Post post)
+        public async Task<IActionResult> AddPost(Post post, IFormFile imagedata)
         {
+            if (imagedata != null)
+            {
+                using (var stream = imagedata.OpenReadStream())
+                {
+                    byte[] buffer = new byte[imagedata.Length];
+                    stream.Read(buffer, 0, (int)imagedata.Length);
+                    string filename = post.ID + "." + imagedata.FileName.Split('.')[1];
+                    post.ImageData = buffer;
+                    post.ImageContentType = imagedata.ContentType;
+                }
+            }
+
             try
             {
                 _postLogic.Create(post);

@@ -33,6 +33,12 @@ namespace sof_feleves.Controllers
             return View();
         }
 
+        public IActionResult GetProfilePic(string userid)
+        {
+            var user = _userManager.Users.FirstOrDefault(t => t.Id == userid);
+            return new FileContentResult(user.ProfilePicData, user.ProfilePicContentType);
+        }
+
         public IActionResult Privacy()
         {
             return View();
