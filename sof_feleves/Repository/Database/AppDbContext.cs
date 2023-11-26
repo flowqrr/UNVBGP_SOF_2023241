@@ -48,6 +48,10 @@ namespace sof_feleves.Repository
                 new Service { ID = "chiropractor1", HostID = "chiropractor_host1", Name = "Chiropractor" }
                 );
 
+            builder.Entity<Appointment>()
+                .Property(a => a.Date)
+                .HasConversion(v => v, v => DateTime.SpecifyKind(v, DateTimeKind.Utc));
+
             builder.Entity<Service>()
                 .HasOne(service => service.Host)
                 .WithMany(host => host.HostedServices)

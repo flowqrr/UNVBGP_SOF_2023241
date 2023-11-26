@@ -1,0 +1,29 @@
+﻿@model Appointment
+
+<h4>Add Appointment</h4>
+<hr />
+<div class="row">
+    <div class="col-md-6">
+        <form asp-action="AddAppointment" asp-controller="Host" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="ServiceID" />
+
+            <div class="form-group">
+                <label asp-for="Date" class="control-label">Date</label>
+                <input asp-for="Date" type="datetime-local" class="form-control" required />
+                <span asp-validation-for="Date" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="MaxApplicants" class="control-label">Maximum Applicants</label>
+                <input asp-for="MaxApplicants" type="number" class="form-control" required />
+                <span asp-validation-for="MaxApplicants" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="Create Appointment" class="btn btn-primary" />
+            </div>
+        </form>
+
+    </div>
+</div>

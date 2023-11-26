@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.CodeAnalysis;
+using sof_feleves.Logic;
 using sof_feleves.Logic.Interfaces;
 using sof_feleves.Models;
 using sof_feleves.Repository;
@@ -17,13 +18,15 @@ namespace sof_feleves.Controllers
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly IServiceLogic _serviceLogic;
         private readonly IPostLogic _postLogic;
+        private readonly IApointmentLogic _appointmentLogic;
 
         public HostController(
             ILogger<HostController> logger,
             UserManager<SiteUser> userManager,
             RoleManager<IdentityRole> roleManager,
             IServiceLogic serviceLogic,
-            IPostLogic postLogic
+            IPostLogic postLogic,
+            IApointmentLogic apointmentLogic
             )
         {
             _logger = logger;
@@ -31,6 +34,7 @@ namespace sof_feleves.Controllers
             _roleManager = roleManager;
             _serviceLogic = serviceLogic;
             _postLogic = postLogic;
+            _appointmentLogic = apointmentLogic;
         }
 
         public async Task<IActionResult> Dashboard()
@@ -126,14 +130,25 @@ namespace sof_feleves.Controllers
                 }
             }
 
-            try
-            {
-                _postLogic.Create(post);
+
+        [HttpPost]
+        public async Task<IActionResult> AddAppointment(Appointment appointment)
+        {
+
+                try
+                {
+                    var asd = appointment.ServiceID;
+                    _appointmentLogic.Create(appointment);
+
+                return RedirectToAction("ServiceEdit", new { id = appointment.ServiceID });
             }
-            catch (ArgumentException ex)
-            {
-                return View(post);
-            }
+                catch (ArgumentException ex)
+                {
+                    ModelState.AddModelError("", ex.Message);
+                }
+
+            return View(appointment);
+        }
 
             return RedirectToAction("ServiceEdit", new { id = post.ServiceID });
         }
@@ -141,6 +156,28 @@ namespace sof_feleves.Controllers
         public IActionResult WriteMessage()
         {
             return View();
+        }
+        public IActionResult AddAppointment(string serviceId)
+        {
+            Appointment appointment = new Appointment();
+            appointment.ServiceID = serviceId;
+            return View(appointment);
+        }
+        public IActionResult EditAppointment(string id)
+        {
+            var appointment = _appointmentLogic.Read(id);
+            if (appointment == null)
+            {
+                return NotFound();
+            }
+            return View(appointment);
+        }
+        [HttpGet]
+        public IActionResult DeleteAppointment(string id)
+        {
+            Appointment appointment = _appointmentLogic.Read(id);
+            _appointmentLogic.Delete(id);
+            return RedirectToAction("ServiceEdit", new { id = appointment.ServiceID });
         }
 
         public IActionResult AddTimeSlot()

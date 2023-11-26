@@ -17,9 +17,6 @@ namespace sof_feleves.Models
         public string Title { get; set; }
         public string Text { get; set; }
 
-        [NotMapped]
-        [Display(Name = "Include an image")]
-        public IFormFile Image { get; set; }
         public string? ImageContentType { get; set; }
         public byte[]? ImageData { get; set; }
 
