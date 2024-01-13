@@ -22,52 +22,47 @@ body {
 }
 
 .custom-card-dark {
-    padding: 20px 20px; /* Adjust padding as needed */
+    padding: 20px 20px;
     margin: 20px;
     margin-buttom: 30px;
     background-color: #212529;
 }
-/* Primary button */
+
 .btn-one {
-    padding: 3px 3px; /* Adjust padding as needed */
+    padding: 3px 3px; 
     margin: 5px;
     background-color: #14312f;
-    color: #ffffff; /* White text color */
-    outline: 0px solid #ffffff; /* Set your desired color */
+    color: #ffffff; 
+    outline: 0px solid #ffffff; 
     box-shadow: 0 0 0px #ffffff
 }
 
-    /* Hover effect for primary button */
+
     .btn-one:hover {
-        background-color: #0d2422; /* Darker shade on hover */
+        background-color: #0d2422;
         color: #ffffff;
     }
 
-/* Cancel button */
 .btn-three {
-    padding: 3px 3px; /* Adjust padding as needed */
+    padding: 3px 3px; 
     margin: 5px;
     background-color: #999d2c;
-    color: #ffffff; /* White text color */
+    color: #ffffff; 
 }
 
-    /* Hover effect for cancel button */
     .btn-three:hover {
-        background-color: #7e8120; /* Darker shade on hover */
+        background-color: #7e8120;
         color: #ffffff;
     }
 
-/* Secondary button */
 .btn-two {
-    padding: 3px 3px; /* Adjust padding as needed */
+    padding: 3px 3px; 
     margin: 5px;
     background-color: #298d8b;
-    color: #ffffff; /* White text color */
+    color: #ffffff; 
 }
-
-    /* Hover effect for secondary button */
     .btn-two:hover {
-        background-color: #1b6b69; /* Darker shade on hover */
+        background-color: #1b6b69; 
         color: #ffffff;
     }
 
@@ -78,51 +73,18 @@ body {
     .lnk-one:hover {
         color: #1b6b69;
     }
+.modal-header .close {
+    color: black;
+    opacity: 1;
+    font-size: 24px;
+    line-height: 1; 
+    padding: 0; 
+    background: transparent; 
+    border: none;
+}
 
-/* Even darker pastel yellow button */
-/*.btn-pastel-yellow {
-    background-color: #FFD700;*/ /* Darker pastel yellow background color */
-    /*color: #000000;*/ /* Black text color */
-    /*border: 1px solid #FFD700;*/ /* Border color */
-    /*margin: 5px;*/ /* Margin around the button */
-    /*padding: 10px 20px;*/ /* Padding inside the button */
-    /*transition: background-color 0.3s ease;*/ /* Smooth transition for background color */
-/*}*/
+    .modal-header .close:hover {
+        color: red; 
+        opacity: 1;
+    }
 
-    /* Darker shade for even pastel yellow button when hovered */
-    /*.btn-pastel-yellow:hover {
-        background-color: #CCA300;*/ /* Even darker yellow background color on hover */
-        /*color: #FFFFFF;*/ /* White text color on hover */
-    /*}*/
-
-/* Even darker pastel green button */
-/*.btn-pastel-green {
-    background-color: #006400;*/ /* Darker green background color */
-    /*color: #FFFFFF;*/ /* White text color */
-    /*border: 1px solid #006400;*/ /* Border color */
-    /*margin: 5px;*/ /* Margin around the button */
-    /*padding: 10px 20px;*/ /* Padding inside the button */
-    /*transition: background-color 0.3s ease;*/ /* Smooth transition for background color */
-/*}*/
-
-    /* Darker shade for even pastel green button when hovered */
-    /*.btn-pastel-green:hover {
-        background-color: #004400;*/ /* Even darker green background color on hover */
-    /*}*/
-
-/* Even darker pastel red button */
-/*.btn-pastel-red {
-    background-color: #FF5349;*/ /* Darker pastel red background color */
-    /*color: #FFFFFF;*/ /* White text color */
-    /*border: 1px solid #FF5349;*/ /* Border color */
-    /*margin: 5px;*/ /* Margin around the button */
-    /*padding: 10px 20px;*/ /* Padding inside the button */
-    /*transition: background-color 0.3s ease;*/ /* Smooth transition for background color */
-/*}*/
-
-    /* Darker shade for even pastel red button when hovered */
-    /*.btn-pastel-red:hover {
-        background-color: #CC0000;*/ /* Even darker red background color on hover */
-    /*}*/
-
-/* Apply the same styles to other buttons as needed */

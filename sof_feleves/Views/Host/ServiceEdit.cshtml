@@ -152,8 +152,8 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="editLocationModalLabel">Edit Location</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <h5 class="modal-title text-dark" id="editLocationModalLabel">Edit Location</h5>
+                    <button type="button" class="close text-dark" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -178,19 +178,40 @@
             $('#editNameModal, #editDescriptionModal, #editLocationModal').data('service-id', serviceId);
         });
 
-        // handling for submission for Name editing
+        // Function to clear error message and reset field style
+        function clearErrorAndStyle(fieldId) {
+            $('#' + fieldId).removeClass('is-invalid');
+            $('#' + fieldId + 'ErrorMessage').text('');
+        }
+
+        // Function to show error message above the field in red
+        function showErrorMessage(fieldId, message) {
+            $('#' + fieldId).addClass('is-invalid');
+            $('#' + fieldId + 'ErrorMessage').text(message).css('color', 'red');
+        }
+
+        // Handling form submission for Name editing
         $('#editNameForm').submit(function (e) {
             e.preventDefault();
             var newName = $('#newName').val();
             var serviceId = $('#editNameModal').data('service-id');
 
-            // making an AJAX request to update the name in the database
+            if (!newName) {
+                // Show error message and add red border
+                showErrorMessage('newName', 'Name cannot be empty');
+                return;
+            }
+
+            // Clear any previous error message and reset field style
+            clearErrorAndStyle('newName');
+
+            // Making an AJAX request to update the name in the database
             $.ajax({
                 url: '/Host/UpdateServiceName',
                 type: 'POST',
                 data: { id: serviceId, newName: newName },
                 success: function () {
-                    // updating the displayed name on success
+                    // Updating the displayed name on success
                     $('#serviceName').text(newName);
                     $('#editNameModal').modal('hide');
                 },
@@ -200,19 +221,28 @@
             });
         });
 
-        // handling form submission for Description editing
+        // Handling form submission for Description editing
         $('#editDescriptionForm').submit(function (e) {
             e.preventDefault();
             var newDescription = $('#newDescription').val();
             var serviceId = $('#editDescriptionModal').data('service-id');
 
-            // making an AJAX request to update the description in the database
+            if (!newDescription) {
+                // Show error message and add red border
+                showErrorMessage('newDescription', 'Description cannot be empty');
+                return;
+            }
+
+            // Clear any previous error message and reset field style
+            clearErrorAndStyle('newDescription');
+
+            // Making an AJAX request to update the description in the database
             $.ajax({
                 url: '/Host/UpdateServiceDescription',
                 type: 'POST',
                 data: { id: serviceId, newDescription: newDescription },
                 success: function () {
-                    // updating the displayed description on success
+                    // Updating the displayed description on success
                     $('#serviceDescription').text(newDescription);
                     $('#editDescriptionModal').modal('hide');
                 },
@@ -222,19 +252,28 @@
             });
         });
 
-        // handling form submission for Location editing
+        // Handling form submission for Location editing
         $('#editLocationForm').submit(function (e) {
             e.preventDefault();
             var newLocation = $('#newLocation').val();
             var serviceId = $('#editLocationModal').data('service-id');
 
-            // making an AJAX request to update the description in the database
+            if (!newLocation) {
+                // Show error message and add red border
+                showErrorMessage('newLocation', 'Location cannot be empty');
+                return;
+            }
+
+            // Clear any previous error message and reset field style
+            clearErrorAndStyle('newLocation');
+
+            // Making an AJAX request to update the location in the database
             $.ajax({
                 url: '/Host/UpdateServiceLocation',
                 type: 'POST',
                 data: { id: serviceId, newLocation: newLocation },
                 success: function () {
-                    // updating the displayed description on success
+                    // Updating the displayed location on success
                     $('#serviceLocation').text(newLocation);
                     $('#editLocationModal').modal('hide');
                 },
