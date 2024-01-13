@@ -41,7 +41,7 @@
                                     <a class="nav-link text-light" asp-area="" asp-controller="Host" asp-action="HostDashboard">Manage my services</a>
                                 </li>
                             }
-                            else if (User.IsInRole("Guest"))
+                            else
                             {
                                 <li class="nav-item">
                                     <a class="nav-link text-light" asp-area="" asp-controller="Guest" asp-action="GuestDashboard">Browse all services</a>
