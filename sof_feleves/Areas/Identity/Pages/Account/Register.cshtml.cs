@@ -168,7 +168,7 @@ namespace sof_feleves.Areas.Identity.Pages.Account
                         await _signInManager.SignInAsync(user, isPersistent: false);
                         if (Input.IsHost)
                         {
-                            return LocalRedirect("/Host/Dashboard");
+                            return LocalRedirect("/Host/HostDashboard");
                         }
                         return LocalRedirect(returnUrl);
                     }

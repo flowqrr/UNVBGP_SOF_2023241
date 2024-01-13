@@ -10,5 +10,6 @@ namespace sof_feleves.Logic.Interfaces
         IQueryable<Appointment> ReadAll();
         void Update(Appointment item);
         public void ApplyForAppointment(Appointment appointment, SiteUser user);
+        public void CancelAppointmentApplication(Appointment appointment, SiteUser user);
     }
 }

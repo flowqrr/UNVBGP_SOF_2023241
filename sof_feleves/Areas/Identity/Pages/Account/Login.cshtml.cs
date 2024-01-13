@@ -117,7 +117,7 @@ namespace sof_feleves.Areas.Identity.Pages.Account
 
                     if (await _userManager.IsInRoleAsync(user, "Host"))
                     {
-                        return LocalRedirect("/Host/Dashboard");
+                        return LocalRedirect("/Host/HostDashboard");
                     }
 
                     return LocalRedirect(returnUrl);

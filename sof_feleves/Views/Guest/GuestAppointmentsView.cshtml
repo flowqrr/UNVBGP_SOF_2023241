@@ -7,14 +7,27 @@
     <table>
         <thead>
             <tr>
-                <th>Appointment Date</th>
+                <th>Name</th>
+                <th>Date</th>
+                <th>Location</th>
+                <th>Host name</th>
+                <th>Actions</th>
             </tr>
         </thead>
         <tbody>
             @foreach (var appointment in Model)
             {
                 <tr>
+                    <td>@appointment.Service.Name</td>
                     <td>@appointment.Date</td>
+                    <td>@appointment.Service.Location</td>
+                    <td>@appointment.Service.Host.FirstName @appointment.Service.Host.SurName</td>
+                    <td>
+                        <form method="post" action="@Url.Action("CancelAppointmentApplication", "Guest")">
+                            @Html.Hidden("appointmentId", appointment.ID)
+                            <button type="submit">Cancel Application</button>
+                        </form>
+                    </td>
                 </tr>
             }
         </tbody>

@@ -31,7 +31,7 @@ namespace sof_feleves.Controllers
             _appointmentLogic = appointmentLogic;
         }
 
-        public async Task<IActionResult> Dashboard()
+        public IActionResult GuestDashboard()
         {
             List<Service> services = _serviceLogic.ReadAll().ToList();
             return View(services);
@@ -43,9 +43,15 @@ namespace sof_feleves.Controllers
             return View(service);
         }
 
-        public IActionResult GuestAppointmentsView(List<Appointment> appointments)
+        public async Task<IActionResult> GuestAppointmentsView()
         {
-            return View(appointments);
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                return BadRequest("User is not signed in");
+            }
+
+            return View(user.Appointments);
         }
 
         [HttpPost]
@@ -67,12 +73,29 @@ namespace sof_feleves.Controllers
                 return Ok(e.Message);
             }
 
-            return View("GuestAppointmentsView", user.Appointments);
+            return RedirectToAction("GuestAppointmentsView");
         }
 
-        public IActionResult CancelAppointmentApplication()
+        [HttpPost]
+        public async Task<IActionResult> CancelAppointmentApplication(string appointmentId)
         {
-            return View();
+            Appointment appointment = _appointmentLogic.Read(appointmentId);
+            var user = await _userManager.GetUserAsync(User);
+
+            try
+            {
+                _appointmentLogic.CancelAppointmentApplication(appointment, user);
+            }
+            catch (ArgumentException e)
+            {
+                return BadRequest(e.Message);
+            }
+            catch (AppointmentFullException e)
+            {
+                return Ok(e.Message);
+            }
+
+            return View("GuestAppointmentsView", user.Appointments);
         }
 
         public IActionResult BuyPass()

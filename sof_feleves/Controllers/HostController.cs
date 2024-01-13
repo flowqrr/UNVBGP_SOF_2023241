@@ -37,7 +37,7 @@ namespace sof_feleves.Controllers
             _appointmentLogic = apointmentLogic;
         }
 
-        public async Task<IActionResult> Dashboard()
+        public async Task<IActionResult> HostDashboard()
         {
             var user = await _userManager.GetUserAsync(User);
             List<Service> services = user.HostedServices?.ToList() ?? new List<Service>();
@@ -64,14 +64,14 @@ namespace sof_feleves.Controllers
                 return View(service);
             }
 
-            return RedirectToAction(nameof(Dashboard));
+            return RedirectToAction(nameof(HostDashboard));
         }
 
         [HttpGet]
         public IActionResult DeleteService(string id)
         {
             _serviceLogic.Delete(id);
-            return RedirectToAction(nameof(Dashboard));
+            return RedirectToAction(nameof(HostDashboard));
         }
 
         public IActionResult ServiceEdit(string id)

@@ -68,7 +68,7 @@ namespace sof_feleves.Logic
             }
             else if (user == null)
             {
-                throw new ArgumentException("User was not found. Try signing inUser was not found. Try signing in");
+                throw new ArgumentException("User was not found. Try signing in");
             }
             else if (appointment.MaxApplicants == appointment.Applicants.Count)
             {
@@ -76,6 +76,25 @@ namespace sof_feleves.Logic
             }
 
             appointment.Applicants.Add(user);
+            Update(appointment);
+        }
+
+        public void CancelAppointmentApplication(Appointment appointment, SiteUser user)
+        {
+            if (appointment == null)
+            {
+                throw new ArgumentException("Appointment to cancel was not found");
+            }
+            else if (user == null)
+            {
+                throw new ArgumentException("User was not found. Try signing in");
+            }
+            else if (!appointment.Applicants.Contains(user))
+            {
+                throw new ArgumentException("User cannot be removed from this appointment because they aren't on the applicant list");
+            }
+
+            appointment.Applicants.Remove(user);
             Update(appointment);
         }
     }

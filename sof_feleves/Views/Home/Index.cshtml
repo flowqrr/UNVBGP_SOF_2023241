@@ -4,8 +4,14 @@
 
 <div class="text-center">
     <h1 class="display-4">Welcome to Hostie</h1>
-    <p>Please login or register</p>
-    <a href="/Identity/Account/Login" class="btn btn-primary">Login</a>
-    <a href="/Identity/Account/Register" class="btn btn-secondary">Register</a>
-
+    <p>
+        Hostie is your go-to platform for booking appointments for your favorite classes, doctors, beauty salons, or any service you can imagine.
+        As a host, you can share and manage your services for others to enjoy.
+    </p>
+    @if (!User.Identity.IsAuthenticated)
+    {
+        <p>To start your journey, login or register here:</p>
+        <a href="/Identity/Account/Login" class="btn btn-primary">Login</a>
+        <a href="/Identity/Account/Register" class="btn btn-secondary">Register</a>
+    }
 </div>

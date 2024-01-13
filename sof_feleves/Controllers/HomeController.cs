@@ -28,19 +28,6 @@ namespace sof_feleves.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var user = await _userManager.GetUserAsync(User);
-            if (user != null)
-            {
-                if (await _userManager.IsInRoleAsync(user, "Host"))
-                {
-                    return LocalRedirect("/Host/Dashboard");
-                }
-                else
-                {
-                    return LocalRedirect("/Guest/Dashboard");
-                }
-            }
-
             return View();
         }
 
