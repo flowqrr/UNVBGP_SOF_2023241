@@ -1,39 +1,47 @@
 ﻿@model HashSet<Appointment>
 
-<h3>Your Appointments</h3>
+<head>
+    <link rel="stylesheet" href="/css/site.css" />
+</head>
 
-@if (Model != null && Model.Any())
-{
-    <table>
-        <thead>
-            <tr>
-                <th>Name</th>
-                <th>Date</th>
-                <th>Location</th>
-                <th>Host name</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var appointment in Model)
-            {
-                <tr>
-                    <td>@appointment.Service.Name</td>
-                    <td>@appointment.Date</td>
-                    <td>@appointment.Service.Location</td>
-                    <td>@appointment.Service.Host.FirstName @appointment.Service.Host.SurName</td>
-                    <td>
-                        <form method="post" action="@Url.Action("CancelAppointmentApplication", "Guest")">
-                            @Html.Hidden("appointmentId", appointment.ID)
-                            <button type="submit">Cancel Application</button>
-                        </form>
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
-}
-else
-{
-    <p>You don't have anything scheduled yet.</p>
-}
+<div class="container mt-5">
+    <h2>Your Appointments</h2>
+
+    @if (Model != null && Model.Any())
+    {
+        <div class="container mt-3">
+                <table class="table table-striped table-dark text-center">
+                    <thead class="text-light">
+                        <tr>
+                            <th>Name</th>
+                            <th>Date</th>
+                            <th>Location</th>
+                            <th>Host name</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-light">
+                        @foreach (var appointment in Model)
+                        {
+                            <tr>
+                                <td>@appointment.Service.Name</td>
+                                <td>@appointment.Date</td>
+                                <td>@appointment.Service.Location</td>
+                                <td>@appointment.Service.Host.FirstName @appointment.Service.Host.SurName</td>
+                                <td>
+                                    <form method="post" action="@Url.Action("CancelAppointmentApplication", "Guest")">
+                                        @Html.Hidden("appointmentId", appointment.ID)
+                                        <button type="submit" class="btn btn-three">Cancel Application</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+        </div>
+    }
+    else
+    {
+        <p>You don't have anything scheduled yet.</p>
+    }
+</div>
