@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using sof_feleves.Logic.Interfaces;
 using sof_feleves.Models;
+using sof_feleves.Other;
 using Syncfusion.EJ2.FileManager;
 using System.Threading.Tasks;
 

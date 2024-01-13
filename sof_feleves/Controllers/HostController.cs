@@ -1,10 +1,13 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.CodeAnalysis;
+using Newtonsoft.Json.Linq;
 using sof_feleves.Logic;
 using sof_feleves.Logic.Interfaces;
 using sof_feleves.Models;
+using sof_feleves.Other;
 using sof_feleves.Repository;
 using System.Diagnostics;
 
@@ -19,6 +22,7 @@ namespace sof_feleves.Controllers
         private readonly IServiceLogic _serviceLogic;
         private readonly IPostLogic _postLogic;
         private readonly IAppointmentLogic _appointmentLogic;
+        private readonly IHubContext<SignalRHub> _hub;
 
         public HostController(
             ILogger<HostController> logger,
@@ -26,7 +30,8 @@ namespace sof_feleves.Controllers
             RoleManager<IdentityRole> roleManager,
             IServiceLogic serviceLogic,
             IPostLogic postLogic,
-            IAppointmentLogic apointmentLogic
+            IAppointmentLogic apointmentLogic,
+            IHubContext<SignalRHub> hub
             )
         {
             _logger = logger;
@@ -35,6 +40,7 @@ namespace sof_feleves.Controllers
             _serviceLogic = serviceLogic;
             _postLogic = postLogic;
             _appointmentLogic = apointmentLogic;
+            _hub = hub;
         }
 
         public async Task<IActionResult> HostDashboard()
@@ -58,6 +64,7 @@ namespace sof_feleves.Controllers
             try
             {
                 _serviceLogic.Create(service);
+                await _hub.Clients.All.SendAsync("ServiceCreated", service);
             }
             catch (ArgumentException ex)
             {

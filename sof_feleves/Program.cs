@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using sof_feleves.Logic;
 using sof_feleves.Logic.Interfaces;
 using sof_feleves.Models;
+using sof_feleves.Other;
 using sof_feleves.Repository;
 using sof_feleves.Repository.Repositories;
 using sof_feleves.Services;
@@ -51,6 +52,8 @@ builder.Services.AddTransient<IAppointmentLogic, AppointmentLogic>();
 builder.Services.AddControllersWithViews();
 builder.Services.AddControllers();
 
+builder.Services.AddSignalR();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -81,6 +84,7 @@ app.UseEndpoints(endpoints =>
         pattern: "{controller=Home}/{action=Index}/{id?}");
 
     endpoints.MapControllers();
+    endpoints.MapHub<SignalRHub>("/hub");
 });
 
 app.Run();
