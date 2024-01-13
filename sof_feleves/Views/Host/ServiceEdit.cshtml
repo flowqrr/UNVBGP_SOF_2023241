@@ -82,7 +82,7 @@
                     {
                         <li class="list-group-item custom-card-dark text-light">
                             <strong>@appointment.Date:</strong> @appointment.MaxApplicants
-                            <a href="/Host/ManageApplicants" class="btn btn-danger">View / manage applicants</a>
+                            <a href="/Host/ManageApplicants?id=@appointment.ID" class="btn btn-danger">View / manage applicants</a>
                             <a href="/Host/EditAppointment?id=@appointment.ID" class="btn btn-secondary">Edit</a>
                             <a href="/Host/DeleteAppointment?id=@appointment.ID" class="btn btn-danger">Delete</a>
                         </li>

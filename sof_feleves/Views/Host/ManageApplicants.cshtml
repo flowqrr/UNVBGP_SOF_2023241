@@ -23,7 +23,7 @@ else
                     <td>@applicant.FirstName @applicant.SurName</td>
                     <td>@applicant.Email</td>
                     <td>
-                        <form asp-controller="Appointment" asp-action="RemoveApplicant" method="post">
+                        <form asp-controller="Host" asp-action="RemoveApplicant" method="post">
                             <input type="hidden" name="appointmentId" value="@Model.ID" />
                             <input type="hidden" name="applicantId" value="@applicant.Id" />
                             <button type="submit" class="btn btn-danger">Remove</button>

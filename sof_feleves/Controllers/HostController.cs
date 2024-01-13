@@ -221,11 +221,11 @@ namespace sof_feleves.Controllers
             }
         }
 
-        public IActionResult ManageApplicants(string appointmentId)
+        public IActionResult ManageApplicants(string id)
         {
             try
             {
-                Appointment appointment = _appointmentLogic.Read(appointmentId);
+                Appointment appointment = _appointmentLogic.Read(id);
                 return View(appointment);
             }
             catch (Exception)
@@ -235,13 +235,13 @@ namespace sof_feleves.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> RemoveApplicant(string appointmentId, string userId)
+        public async Task<IActionResult> RemoveApplicant(string appointmentId, string applicantId)
         {
             try
             {
                 Appointment appointment = _appointmentLogic.Read(appointmentId);
 
-                var user = await _userManager.FindByIdAsync(userId);
+                var user = await _userManager.FindByIdAsync(applicantId);
                 if (user == null)
                 {
                     throw new ArgumentException("User to remove does not exist");
@@ -253,13 +253,14 @@ namespace sof_feleves.Controllers
                 }
 
                 appointment.Applicants.Remove(user!);
+                _appointmentLogic.Update(appointment);
+
+                return RedirectToAction(nameof(ManageApplicants), new { id = appointment.ID });
             }
             catch (ArgumentException e)
             {
                 return BadRequest(e.Message);
             }
-
-            return RedirectToAction(nameof(ManageApplicants));
         }
 
         //public IActionResult AddTimeSlot()
