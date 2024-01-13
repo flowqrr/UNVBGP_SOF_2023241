@@ -27,18 +27,18 @@
                 {
                     <tr>
                         <td>
-                            <a asp-action="ServiceEdit" asp-controller="Host" asp-route-id="@service.ID">
+                            <a class="lnk-one" asp-action="ServiceEdit" asp-controller="Host" asp-route-id="@service.ID">
                                 @service.Name
                             </a>
                         </td>
                         <td>@service.Description</td>
                         <td>@service.Location</td>
                         <td>
-                            <button class="btn btn-primary" onclick="copyToClipboard('@baseURL/Guest/ServiceView?id=@service.ID')">
+                            <button class="btn btn-two" onclick="copyToClipboard('@baseURL/Guest/ServiceView?id=@service.ID')">
                                 Get shareable link for @service.Name
                             </button>
                             /
-                            <a href="/Host/DeleteService?id=@service.ID" class="btn btn-danger">Delete</a>
+                            <a href="/Host/DeleteService?id=@service.ID" class="btn btn-three">Delete</a>
                         </td>
                     </tr>
                 }
@@ -46,7 +46,7 @@
         </table>
     }
     <div class="mt-3">
-        <a asp-action="AddService" asp-controller="Host" class="btn btn-success">Create a new Service</a>
+        <a asp-action="AddService" asp-controller="Host" class="btn btn-two">Create a new Service</a>
     </div>
 </div>
 
