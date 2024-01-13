@@ -1,94 +1,104 @@
 ﻿@model Service
-
-<h2>
-    <span id="serviceName">@Model.Name</span>
-    <button class="btn btn-link edit-btn"
-            data-toggle="modal"
-            data-target="#editNameModal"
-            data-service-id="@Model.ID">
-        Edit
-    </button>
-</h2>
-
-<div>
-    <h3>
-        Description
+<head>
+    <link rel="stylesheet" href="/css/site.css" />
+</head>
+<div class="container mt-5">
+    <h2 class="mb-4">
+        <span id="serviceName">@Model.Name</span>
         <button class="btn btn-link edit-btn"
                 data-toggle="modal"
-                data-target="#editDescriptionModal"
+                data-target="#editNameModal"
                 data-service-id="@Model.ID">
             Edit
         </button>
-    </h3>
-    <p><span id="serviceDescription">@Model.Description</span></p>
-</div>
+    </h2>
 
-<div>
-    <h3>
-        Location
-        <button class="btn btn-link edit-btn"
-                data-toggle="modal"
-                data-target="#editLocationModal"
-                data-service-id="@Model.ID">
-            Edit
-        </button>
-    </h3>
-    <p><span id="serviceLocation">@Model.Location</span></p>
-</div>
+    <div class="card mb-3 custom-card">
+        <div class="card-body ">
+            <h3 class="card-title">
+                Description
+                <button class="btn btn-link edit-btn"
+                        data-toggle="modal"
+                        data-target="#editDescriptionModal"
+                        data-service-id="@Model.ID">
+                    Edit
+                </button>
+            </h3>
+            <p class="card-text"><span id="serviceDescription">@Model.Description</span></p>
+        </div>
+    </div>
 
-<div>
-    <h3>Posts</h3>
-    @if (Model.Posts != null)
-    {
-        <ul>
-            @foreach (var post in Model.Posts)
+    <div class="card mb-3 custom-card">
+        <div class="card-body">
+            <h3 class="card-title">
+                Location
+                <button class="btn btn-link edit-btn"
+                        data-toggle="modal"
+                        data-target="#editLocationModal"
+                        data-service-id="@Model.ID">
+                    Edit
+                </button>
+            </h3>
+            <p class="card-text"><span id="serviceLocation">@Model.Location</span></p>
+        </div>
+    </div>
+
+    <div class="card mb-3 custom-card">
+        <div class="card-body">
+            <h3 class="card-title">Posts</h3>
+            @if (Model.Posts != null)
             {
-                <li>
-                    @if (post.ImageData != null)
+                <ul class="list-group">
+                    @foreach (var post in Model.Posts)
                     {
-                        <img src="@Url.Action("GetPostImage", "Home", new { postid = post.ID })" alt="Attached Image" style="max-width: 100px; max-height: 100px;" />
+                        <li class="list-group-item custom-card-dark text-light">
+                            @if (post.ImageData != null)
+                            {
+                                <img src="@Url.Action("GetPostImage", "Home", new { postid = post.ID })" alt="Attached Image" class="img-thumbnail" style="max-width: 100px; max-height: 100px;" />
+                            }
+                            <strong>@post.Title:</strong> @post.Text
+                        </li>
                     }
-                    <strong>@post.Title:</strong> @post.Text
-                </li>
+                </ul>
             }
-        </ul>
-    }
-    else
-    {
-        <p>No posts yet.</p>
-    }
-    <form asp-action="AddPost" asp-controller="Host" method="get">
-        <input type="hidden" name="serviceId" value="@Model.ID" />
-        <button type="submit" class="btn btn-primary">Add a post</button>
-    </form>
-</div>
-
-<div>
-    <h3>Appointments</h3>
-    @if (Model.Appointments != null)
-    {
-        <ul>
-            @foreach (var appointment in Model.Appointments)
+            else
             {
-                <li>
-                    <strong>@appointment.Date:</strong> @appointment.MaxApplicants
-                    <!-- Display additional details of the appointment if needed -->
-                    <a href="/Host/EditAppointment?id=@appointment.ID" class="btn btn-secondary">Edit</a>
-                    <!-- Delete Button -->
-                    <a href="/Host/DeleteAppointment?id=@appointment.ID" class="btn btn-danger">Delete</a>
-                </li>
+                <p class="text-muted">No posts yet.</p>
             }
-        </ul>
-    }
-    else
-    {
-        <p>No appointments available.</p>
-    }
-    <form asp-action="AddAppointment" asp-controller="Host" method="get">
-        <input type="hidden" name="serviceId" value="@Model.ID" />
-        <button type="submit" class="btn btn-primary">Add an appointment</button>
-    </form>
-</div>
+            <form asp-action="AddPost" asp-controller="Host" method="get">
+                <input type="hidden" name="serviceId" value="@Model.ID" />
+                <button type="submit" class="btn btn-primary">Add a post</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="card mb-3 custom-card">
+        <div class="card-body">
+            <h3 class="card-title">Appointments</h3>
+            @if (Model.Appointments != null)
+            {
+                <ul class="list-group">
+                    @foreach (var appointment in Model.Appointments)
+                    {
+                        <li class="list-group-item custom-card-dark text-light">
+                            <strong>@appointment.Date:</strong> @appointment.MaxApplicants
+                            <!-- Display additional details of the appointment if needed -->
+                            <a href="/Host/EditAppointment?id=@appointment.ID" class="btn btn-secondary">Edit</a>
+                            <!-- Delete Button -->
+                            <a href="/Host/DeleteAppointment?id=@appointment.ID" class="btn btn-danger">Delete</a>
+                        </li>
+                    }
+                </ul>
+            }
+            else
+            {
+                <p class="text-muted">No appointments available.</p>
+            }
+            <form asp-action="AddAppointment" asp-controller="Host" method="get">
+                <input type="hidden" name="serviceId" value="@Model.ID" />
+                <button type="submit" class="btn btn-primary">Add an appointment</button>
+            </form>
+        </div>
 
 <!-- model for editing Name -->
 <div class="modal fade" id="editNameModal" tabindex="-1" role="dialog" aria-labelledby="editNameModalLabel" aria-hidden="true">
@@ -157,6 +167,7 @@
             </div>
         </div>
     </div>
+</div>
 </div>
 
 @section scripts {

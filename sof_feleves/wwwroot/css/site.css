@@ -16,3 +16,11 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+.custom-card {
+    background-color: #343a40;
+}
+
+.custom-card-dark {
+    background-color: #212529;
+}
