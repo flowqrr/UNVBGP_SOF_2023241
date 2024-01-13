@@ -46,7 +46,7 @@ builder.Services.AddTransient<IRepository<Appointment>, AppointmentRepository>()
 
 builder.Services.AddTransient<IServiceLogic, ServiceLogic>();
 builder.Services.AddTransient<IPostLogic, PostLogic>();
-builder.Services.AddTransient<IApointmentLogic, AppointmentLogic>();
+builder.Services.AddTransient<IAppointmentLogic, AppointmentLogic>();
 
 builder.Services.AddControllersWithViews();
 
