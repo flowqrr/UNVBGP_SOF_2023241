@@ -1,6 +1,6 @@
 ﻿@model Appointment
 
-<h2>Manage Applicants for @Model.Service.Name appointment at @Model.Date</h2>
+<h3>Manage Applicants for @Model.Service.Name appointment at @Model.Date</h3>
 
 @if (Model.Applicants.Count == 0)
 {
@@ -9,24 +9,24 @@
 else
 {
     <table class="table">
-        <thead>
-            <tr>
+        <thead class ="text-light">
+            <tr class ="text-light">
                 <th>Applicant Name</th>
                 <th>Email</th>
                 <th>Actions</th>
             </tr>
         </thead>
-        <tbody>
+        <tbody class="text-light">
             @foreach (var applicant in Model.Applicants)
             {
-                <tr>
-                    <td>@applicant.FirstName @applicant.SurName</td>
-                    <td>@applicant.Email</td>
-                    <td>
-                        <form asp-controller="Host" asp-action="RemoveApplicant" method="post">
-                            <input type="hidden" name="appointmentId" value="@Model.ID" />
-                            <input type="hidden" name="applicantId" value="@applicant.Id" />
-                            <button type="submit" class="btn btn-danger">Remove</button>
+                <tr class="text-light">
+                    <td class ="text-light">@applicant.FirstName @applicant.SurName</td>
+                    <td class="text-light">@applicant.Email</td>
+                    <td class="text-light">
+                        <form asp-controller="Host" asp-action="RemoveApplicant" method="post" class="text-light">
+                            <input type="hidden" name="appointmentId" value="@Model.ID" class="text-light" />
+                            <input type="hidden" name="applicantId" value="@applicant.Id" class="text-light" />
+                            <button type="submit" class="btn btn-three">Remove</button>
                         </form>
                     </td>
                 </tr>
