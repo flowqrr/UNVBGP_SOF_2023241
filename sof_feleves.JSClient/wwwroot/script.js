@@ -1,20 +1,15 @@
-﻿let actors = [];
+﻿let users = 0;
 let connection = null;
 getdata();
 setupSignalR();
 
-
 function setupSignalR() {
-     connection = new signalR.HubConnectionBuilder()
-        .withUrl("http://localhost:53910/hub")
+    connection = new signalR.HubConnectionBuilder()
+        .withUrl("https://localhost:7258/api")
         .configureLogging(signalR.LogLevel.Information)
         .build();
 
-    connection.on("ActorCreated", (user, message) => {
-        getdata();
-    });
-
-    connection.on("ActorDeleted", (user, message) => {
+    connection.on("servicescount", (user, message) => {
         getdata();
     });
 
@@ -22,8 +17,6 @@ function setupSignalR() {
         await start();
     });
     start();
-
-
 }
 
 async function start() {
@@ -37,53 +30,11 @@ async function start() {
 };
 
 async function getdata() {
-    await fetch('http://localhost:53910/actor')
+    await fetch('https://localhost:7258/api/statistics/servicescount')
         .then(x => x.json())
         .then(y => {
             actors = y;
-            //console.log(actors);
-            display();
+            console.log(actors);
+            //display();
         });
-}
-
-function display() {
-    document.getElementById('resultarea').innerHTML = "";
-    actors.forEach(t => {
-        document.getElementById('resultarea').innerHTML +=
-            "<tr><td>" + t.actorId + "</td><td>"
-        + t.actorName + "</td><td>" +
-        `<button type="button" onclick="remove(${t.actorId})">Delete</button>`
-            +"</td></tr>";
-    });
-}
-
-function remove(id) {
-    fetch('http://localhost:53910/actor/' + id, {
-        method: 'DELETE',
-        headers: { 'Content-Type': 'application/json', },
-        body: null })
-        .then(response => response)
-        .then(data => {
-            console.log('Success:', data);
-            getdata();
-        })
-        .catch((error) => { console.error('Error:', error); });
-
-}
-
-function create() {
-    let name = document.getElementById('actorname').value;
-    fetch('http://localhost:53910/actor', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', },
-        body: JSON.stringify(
-            { actorName: name })})
-        .then(response => response)
-        .then(data =>
-        {
-            console.log('Success:', data);
-            getdata();
-        })
-        .catch((error) => { console.error('Error:', error); });
-        
 }
