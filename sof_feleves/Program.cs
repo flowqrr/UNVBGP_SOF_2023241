@@ -42,9 +42,11 @@ builder.Services.AddTransient<IEmailSender, EmailSender>();
 
 builder.Services.AddTransient<IRepository<Service>, ServiceRepository>();
 builder.Services.AddTransient<IRepository<Post>, PostRepository>();
+builder.Services.AddTransient<IRepository<Appointment>, AppointmentRepository>();
 
 builder.Services.AddTransient<IServiceLogic, ServiceLogic>();
 builder.Services.AddTransient<IPostLogic, PostLogic>();
+builder.Services.AddTransient<IApointmentLogic, AppointmentLogic>();
 
 builder.Services.AddControllersWithViews();
 
