@@ -50,5 +50,10 @@ namespace sof_feleves.Logic
         {
             _repository.Update(item);
         }
+
+        public int CountItems()
+        {
+            return _repository.CountItems();
+        }
     }
 }

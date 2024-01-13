@@ -7,5 +7,6 @@
         T? Read(string id);
         void Update(T item);
         void Delete(string id);
+        int CountItems();
     }
 }

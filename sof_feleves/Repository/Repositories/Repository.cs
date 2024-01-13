@@ -25,5 +25,10 @@
             ctx.Set<T>().Remove(Read(id));
             ctx.SaveChanges();
         }
+
+        public int CountItems()
+        {
+            return ctx.Set<T>().Count();
+        }
     }
 }

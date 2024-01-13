@@ -10,5 +10,6 @@ namespace sof_feleves.Logic.Interfaces
         Service Read(string id);
         IQueryable<Service> ReadAll();
         void Update(Service item);
+        int CountItems();
     }
 }

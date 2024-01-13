@@ -49,6 +49,7 @@ builder.Services.AddTransient<IPostLogic, PostLogic>();
 builder.Services.AddTransient<IAppointmentLogic, AppointmentLogic>();
 
 builder.Services.AddControllersWithViews();
+builder.Services.AddControllers();
 
 var app = builder.Build();
 
@@ -72,5 +73,14 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 app.MapRazorPages();
+
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapControllerRoute(
+        name: "default",
+        pattern: "{controller=Home}/{action=Index}/{id?}");
+
+    endpoints.MapControllers();
+});
 
 app.Run();
