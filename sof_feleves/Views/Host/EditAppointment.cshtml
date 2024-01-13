@@ -1,5 +1,10 @@
 ﻿@model Appointment
 
+@{
+    var minDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 05);
+    var maxDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 27);
+}
+
 <h4>Edit Appointment</h4>
 <hr/>
 <div class="col-md-6">
@@ -11,7 +16,12 @@
 
         <div class="form-group">
             <label asp-for="Date" class="control-label">Date</label>
-            <input asp-for="Date" type="datetime-local" class="form-control" />
+            <div class='input-group date' id='datepicker'>
+                <input asp-for="Date" type="text" class="form-control" value="@DateTime.Now.ToString("yyyy-MM-ddThh:mm")" />
+                <span class="input-group-addon">
+                    <span class="glyphicon glyphicon-calendar"></span>
+                </span>
+            </div>
             <span asp-validation-for="Date" class="text-danger"></span>
         </div>
 
@@ -24,3 +34,20 @@
         <button type="submit" class="btn btn-two">Save changes</button>
     </form>
 </div>
+
+@section Scripts
+    {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.15.1/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.7.14/js/bootstrap-datetimepicker.min.js"></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.7.14/css/bootstrap-datetimepicker.min.css">
+
+    <script>
+        $(function () {
+            $('#datepicker').datetimepicker();
+        });
+    </script>
+}
