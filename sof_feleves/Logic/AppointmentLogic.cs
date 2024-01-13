@@ -57,6 +57,11 @@ namespace sof_feleves.Logic
 
         public void Update(Appointment item)
         {
+            if (item.Date < DateTime.Now)
+            {
+                throw new ArgumentException("Cannot set a past time for the appointment");
+            }
+            item.Date = item.Date.ToUniversalTime();
             _repository.Update(item);
         }
 

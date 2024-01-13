@@ -1,0 +1,36 @@
+﻿@model Appointment
+
+<h2>Manage Applicants for @Model.Service.Name appointment at @Model.Date</h2>
+
+@if (Model.Applicants.Count == 0)
+{
+    <p>No applicants for this appointment.</p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Applicant Name</th>
+                <th>Email</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var applicant in Model.Applicants)
+            {
+                <tr>
+                    <td>@applicant.FirstName @applicant.SurName</td>
+                    <td>@applicant.Email</td>
+                    <td>
+                        <form asp-controller="Appointment" asp-action="RemoveApplicant" method="post">
+                            <input type="hidden" name="appointmentId" value="@Model.ID" />
+                            <input type="hidden" name="applicantId" value="@applicant.Id" />
+                            <button type="submit" class="btn btn-danger">Remove</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

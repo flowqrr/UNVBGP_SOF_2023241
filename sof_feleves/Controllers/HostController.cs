@@ -147,7 +147,6 @@ namespace sof_feleves.Controllers
         {
             try
             {
-                var asd = appointment.ServiceID;
                 _appointmentLogic.Create(appointment);
 
                 return RedirectToAction("ServiceEdit", new { id = appointment.ServiceID });
@@ -164,57 +163,133 @@ namespace sof_feleves.Controllers
         {
             return View();
         }
+
         public IActionResult AddAppointment(string serviceId)
         {
             Appointment appointment = new Appointment();
             appointment.ServiceID = serviceId;
             return View(appointment);
         }
+
+        [HttpGet]
         public IActionResult EditAppointment(string id)
         {
-            var appointment = _appointmentLogic.Read(id);
-            if (appointment == null)
+            try
             {
-                return NotFound();
+                Appointment appointment = _appointmentLogic.Read(id);
+                return View(appointment);
             }
-            return View(appointment);
+            catch (Exception)
+            {
+                return BadRequest("Appointment with the given ID doesn't exist");
+            }
         }
-        [HttpGet]
-        public IActionResult DeleteAppointment(string id)
+
+        [HttpPost]
+        public IActionResult EditAppointment(Appointment appointment)
         {
-            Appointment appointment = _appointmentLogic.Read(id);
-            _appointmentLogic.Delete(id);
+            ModelState.Remove("Service");
+            if (!ModelState.IsValid)
+            {
+                return View(appointment);
+            }
+
+            try
+            {
+                _appointmentLogic.Update(appointment);
+            }
+            catch (ArgumentException e)
+            {
+                return BadRequest(e.Message);
+            }
+
             return RedirectToAction("ServiceEdit", new { id = appointment.ServiceID });
         }
 
-        public IActionResult AddTimeSlot()
+        [HttpGet]
+        public IActionResult DeleteAppointment(string id)
         {
-            return View();
+            try
+            {
+                Appointment appointment = _appointmentLogic.Read(id);
+                _appointmentLogic.Delete(id);
+                return RedirectToAction("ServiceEdit", new { id = appointment.ServiceID });
+            }
+            catch (Exception)
+            {
+                return BadRequest("Appointment with the given ID doesn't exist");
+            }
         }
 
-        public IActionResult EditTimeSlot()
+        public IActionResult ManageApplicants(string appointmentId)
         {
-            return View();
+            try
+            {
+                Appointment appointment = _appointmentLogic.Read(appointmentId);
+                return View(appointment);
+            }
+            catch (Exception)
+            {
+                return BadRequest("Appointment with the given ID doesn't exist");
+            }
         }
 
-        public IActionResult AddPass()
+        [HttpPost]
+        public async Task<IActionResult> RemoveApplicant(string appointmentId, string userId)
         {
-            return View();
+            try
+            {
+                Appointment appointment = _appointmentLogic.Read(appointmentId);
+
+                var user = await _userManager.FindByIdAsync(userId);
+                if (user == null)
+                {
+                    throw new ArgumentException("User to remove does not exist");
+                }
+
+                if (!appointment.Applicants.Contains(user))
+                {
+                    throw new ArgumentException("User isn't in the applicants list of this appointment");
+                }
+
+                appointment.Applicants.Remove(user!);
+            }
+            catch (ArgumentException e)
+            {
+                return BadRequest(e.Message);
+            }
+
+            return RedirectToAction(nameof(ManageApplicants));
         }
 
-        public IActionResult EditPass()
-        {
-            return View();
-        }
+        //public IActionResult AddTimeSlot()
+        //{
+        //    return View();
+        //}
 
-        public IActionResult DeletePass()
-        {
-            return View();
-        }
+        //public IActionResult EditTimeSlot()
+        //{
+        //    return View();
+        //}
 
-        public IActionResult DeleteTimeSlot()
-        {
-            return View();
-        }
+        //public IActionResult AddPass()
+        //{
+        //    return View();
+        //}
+
+        //public IActionResult EditPass()
+        //{
+        //    return View();
+        //}
+
+        //public IActionResult DeletePass()
+        //{
+        //    return View();
+        //}
+
+        //public IActionResult DeleteTimeSlot()
+        //{
+        //    return View();
+        //}
     }
 }
