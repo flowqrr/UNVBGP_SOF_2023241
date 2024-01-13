@@ -1,72 +1,82 @@
 ﻿@model Service
+<head>
+    <link rel="stylesheet" href="/css/site.css" />
+</head>
+<div class="container mt-5">
+    <h2 class="mb-4">
+        <span id="serviceName">@Model.Name</span>
+    </h2>
 
-<h2>
-    <span id="serviceName">@Model.Name</span>
-</h2>
+    <div class="card mb-3 custom-card">
+        <div class="card-body">
+            <h3 class="card-title">
+                Description
+            </h3>
+            <p class="card-text"><span id="serviceDescription">@Model.Description</span></p>
+        </div>
+    </div>
 
-<div>
-    <h3>
-        Description
-    </h3>
-    <p><span id="serviceDescription">@Model.Description</span></p>
-</div>
+    <div class="card mb-3 custom-card">
+        <div class="card-body">
+            <h3 class="card-title">
+                Location
+            </h3>
+            <p class="card-text"><span id="serviceLocation">@Model.Location</span></p>
+        </div>
+    </div>
 
-<div>
-    <h3>
-        Location
-    </h3>
-    <p><span id="serviceDescription">@Model.Location</span></p>
-</div>
-
-<div>
-    <h3>Posts</h3>
-    @if (Model.Posts != null)
-    {
-        <ul>
-            @foreach (var post in Model.Posts)
+    <div class="card mb-3 custom-card">
+        <div class="card-body">
+            <h3 class="card-title">Appointments</h3>
+            @if (Model.Appointments != null)
             {
-                <li>
-                    @if (post.ImageData != null)
+                <ul class="list-group">
+                    @foreach (var appointment in Model.Appointments)
                     {
-                        <img src="@Url.Action("GetPostImage", "Home", new { postid = post.ID })" alt="Attached Image" style="max-width: 100px; max-height: 100px;" />
-                    }
-                    <strong>@post.Title:</strong> @post.Text
-                </li>
-            }
-        </ul>
-    }
-    else
-    {
-        <p>No posts yet.</p>
-    }
-</div>
+                        <li class="list-group-item custom-card-dark text-light">
+                            <strong>@appointment.Date:</strong> @appointment.MaxApplicants
+                            @if (User.Identity.IsAuthenticated)
+                            {
+                                <form method="post" action="@Url.Action("ApplyForAppointment", "Guest")">
+                                    @Html.Hidden("appointmentId", appointment.ID)
+                                    <button type="submit" class="btn btn-two">Apply</button>
+                                </form>
+                            }
+                        </li>
 
-<div>
-    <h3>Appointments</h3>
-    @if (Model.Appointments != null)
-    {
-        <ul>
-            @foreach (var appointment in Model.Appointments)
-            {
-                <li>
-                    <strong>@appointment.Date:</strong>
-                </li>
-                @if (User.Identity.IsAuthenticated)
-                {
-                    <form method="post" action="@Url.Action("ApplyForAppointment", "Guest")">
-                        @Html.Hidden("appointmentId", appointment.ID)
-                        <button type="submit">Apply</button>
-                    </form>
-                }
-                else
-                {
-                    <p>You need to <a href="/Identity/Account/Login">log in</a> or <a href="/Identity/Account/Register">create an account</a> to apply for this appointment.</p>
-                }
+                    }
+                </ul>
             }
-        </ul>
-    }
-    else
-    {
-        <p>No appointments available.</p>
-    }
+            else
+            {
+                <p class="text-muted">No appointments available.</p>
+            }
+        </div>
+    </div>
+
+    <div class="card mb-3 custom-card">
+        <div class="card-body">
+            <h3 class="card-title">Posts</h3>
+            @if (Model.Posts != null)
+            {
+                <ul class="list-group">
+                    @foreach (var post in Model.Posts)
+                    {
+                        <li class="list-group-item custom-card-dark text-light">
+                            @if (post.ImageData != null)
+                            {
+                                <img src="@Url.Action("GetPostImage", "Home", new { postid = post.ID })" alt="Attached Image" class="img-thumbnail" />
+                            }
+                            <h5 class="card-title">@post.Title</h5>
+                            <p class="card-text">@post.Text</p>
+                        </li>
+                    }
+                </ul>
+            }
+            else
+            {
+                <p class="text-muted">No posts yet.</p>
+            }
+        </div>
+    </div>
 </div>
