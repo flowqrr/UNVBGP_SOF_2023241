@@ -5,7 +5,7 @@
 <div class="container mt-5">
     <h2 class="mb-4">
         <span id="serviceName">@Model.Name</span>
-        <button class="btn btn-link edit-btn"
+        <button class="btn btn-link lnk-one edit-btn"
                 data-toggle="modal"
                 data-target="#editNameModal"
                 data-service-id="@Model.ID">
@@ -17,7 +17,7 @@
         <div class="card-body ">
             <h3 class="card-title">
                 Description
-                <button class="btn btn-link edit-btn"
+                <button class="btn btn-link lnk-one edit-btn"
                         data-toggle="modal"
                         data-target="#editDescriptionModal"
                         data-service-id="@Model.ID">
@@ -32,7 +32,7 @@
         <div class="card-body">
             <h3 class="card-title">
                 Location
-                <button class="btn btn-link edit-btn"
+                <button class="btn btn-link lnk-one edit-btn"
                         data-toggle="modal"
                         data-target="#editLocationModal"
                         data-service-id="@Model.ID">
@@ -40,6 +40,34 @@
                 </button>
             </h3>
             <p class="card-text"><span id="serviceLocation">@Model.Location</span></p>
+        </div>
+    </div>
+
+    <div class="card mb-3 custom-card">
+        <div class="card-body">
+            <h3 class="card-title">Appointments</h3>
+            @if (Model.Appointments != null)
+            {
+                <ul class="list-group">
+                    @foreach (var appointment in Model.Appointments)
+                    {
+                        <li class="list-group-item custom-card-dark text-light">
+                            <strong>@appointment.Date:</strong> @appointment.MaxApplicants
+                            <a href="/Host/ManageApplicants?id=@appointment.ID" class="btn btn-two">View / manage applicants</a>
+                            <a href="/Host/EditAppointment?id=@appointment.ID" class="btn btn-one">Edit</a>
+                            <a href="/Host/DeleteAppointment?id=@appointment.ID" class="btn btn-three">Delete</a>
+                        </li>
+                    }
+                </ul>
+            }
+            else
+            {
+                <p class="text-muted">No appointments available.</p>
+            }
+            <form asp-action="AddAppointment" asp-controller="Host" method="get">
+                <input type="hidden" name="serviceId" value="@Model.ID" />
+                <button type="submit" class="btn btn-two">Add an appointment</button>
+            </form>
         </div>
     </div>
 
@@ -54,9 +82,10 @@
                         <li class="list-group-item custom-card-dark text-light">
                             @if (post.ImageData != null)
                             {
-                                <img src="@Url.Action("GetPostImage", "Home", new { postid = post.ID })" alt="Attached Image" class="img-thumbnail" style="max-width: 100px; max-height: 100px;" />
+                                <img src="@Url.Action("GetPostImage", "Home", new { postid = post.ID })" alt="Attached Image" class="img-thumbnail" />
                             }
-                            <strong>@post.Title:</strong> @post.Text
+                            <h5 class="card-title">@post.Title</h5>
+                            <p class="card-text">@post.Text</p>
                         </li>
                     }
                 </ul>
@@ -67,40 +96,13 @@
             }
             <form asp-action="AddPost" asp-controller="Host" method="get">
                 <input type="hidden" name="serviceId" value="@Model.ID" />
-                <button type="submit" class="btn btn-primary">Add a post</button>
+                <button type="submit" class="btn btn-two">Add a post</button>
             </form>
         </div>
     </div>
 
-    <div class="card mb-3 custom-card">
-        <div class="card-body">
-            <h3 class="card-title">Appointments</h3>
-            @if (Model.Appointments != null)
-            {
-                <ul class="list-group">
-                    @foreach (var appointment in Model.Appointments)
-                    {
-                        <li class="list-group-item custom-card-dark text-light">
-                            <strong>@appointment.Date:</strong> @appointment.MaxApplicants
-                            <a href="/Host/ManageApplicants?id=@appointment.ID" class="btn btn-danger">View / manage applicants</a>
-                            <a href="/Host/EditAppointment?id=@appointment.ID" class="btn btn-secondary">Edit</a>
-                            <a href="/Host/DeleteAppointment?id=@appointment.ID" class="btn btn-danger">Delete</a>
-                        </li>
-                    }
-                </ul>
-            }
-            else
-            {
-                <p class="text-muted">No appointments available.</p>
-            }
-            <form asp-action="AddAppointment" asp-controller="Host" method="get">
-                <input type="hidden" name="serviceId" value="@Model.ID" />
-                <button type="submit" class="btn btn-primary">Add an appointment</button>
-            </form>
-        </div>
-
 <!-- model for editing Name -->
-<div class="modal fade" id="editNameModal" tabindex="-1" role="dialog" aria-labelledby="editNameModalLabel" aria-hidden="true">
+<div class="modal fade text-dark" id="editNameModal" tabindex="-1" role="dialog" aria-labelledby="editNameModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -115,7 +117,7 @@
                         <label for="newName">New Name:</label>
                         <input type="text" class="form-control" id="newName" />
                     </div>
-                    <button type="submit" class="btn btn-primary">Save</button>
+                    <button type="submit" class="btn btn-two">Save</button>
                 </form>
             </div>
         </div>
@@ -123,7 +125,7 @@
 </div>
 
 <!-- model for editing Description -->
-<div class="modal fade" id="editDescriptionModal" tabindex="-1" role="dialog" aria-labelledby="editDescriptionModalLabel" aria-hidden="true">
+        <div class="modal fade text-dark" id="editDescriptionModal" tabindex="-1" role="dialog" aria-labelledby="editDescriptionModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -138,7 +140,7 @@
                         <label for="newDescription">New Description:</label>
                         <textarea class="form-control" id="newDescription"></textarea>
                     </div>
-                    <button type="submit" class="btn btn-primary">Save</button>
+                    <button type="submit" class="btn btn-two">Save</button>
                 </form>
             </div>
         </div>
@@ -146,7 +148,7 @@
 </div>
 
 <!-- model for editing Location -->
-<div class="modal fade" id="editLocationModal" tabindex="-1" role="dialog" aria-labelledby="editLocationModalLabel" aria-hidden="true">
+<div class="modal fade text-dark" id="editLocationModal" tabindex="-1" role="dialog" aria-labelledby="editLocationModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -161,7 +163,7 @@
                         <label for="newLocation">New Location:</label>
                         <textarea class="form-control" id="newLocation"></textarea>
                     </div>
-                    <button type="submit" class="btn btn-primary">Save</button>
+                    <button type="submit" class="btn btn-two">Save</button>
                 </form>
             </div>
         </div>
