@@ -8,6 +8,7 @@ namespace sof_feleves.Models
         public Appointment()
         {
             ID = Guid.NewGuid().ToString();
+            Applicants = new HashSet<SiteUser>();
         }
 
         [Key]
@@ -19,6 +20,6 @@ namespace sof_feleves.Models
         public virtual Service Service { get; set; }
 
         [NotMapped]
-        public virtual ICollection<SiteUser>? Applicants { get; set; }
+        public virtual ICollection<SiteUser> Applicants { get; set; }
     }
 }

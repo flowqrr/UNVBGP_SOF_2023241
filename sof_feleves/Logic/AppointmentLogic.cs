@@ -1,10 +1,11 @@
-﻿using sof_feleves.Logic.Interfaces;
+﻿using Humanizer;
+using sof_feleves.Logic.Interfaces;
 using sof_feleves.Models;
 using sof_feleves.Repository;
 
 namespace sof_feleves.Logic
 {
-    public class AppointmentLogic : IApointmentLogic
+    public class AppointmentLogic : IAppointmentLogic
     {
         private readonly IRepository<Appointment> _repository;
 
@@ -19,7 +20,16 @@ namespace sof_feleves.Logic
             {
                 throw new ArgumentException("Appointment must contain a ServiceID");
             }
+            if (item.MaxApplicants <= 0)
+            {
+                throw new ArgumentException("Number of applicants should be a positive number");
+            }
+            if (item.Date <= DateTime.Now)
+            {
+                throw new ArgumentException("Date of the appointment cannot be in the past");
+            }
 
+            item.Date = item.Date.ToUniversalTime();
             _repository.Create(item);
         }
 
@@ -49,5 +59,29 @@ namespace sof_feleves.Logic
         {
             _repository.Update(item);
         }
+
+        public void ApplyForAppointment(Appointment appointment, SiteUser user)
+        {
+            if (appointment == null)
+            {
+                throw new ArgumentException("Appointment to apply for was not found");
+            }
+            else if (user == null)
+            {
+                throw new ArgumentException("User was not found. Try signing inUser was not found. Try signing in");
+            }
+            else if (appointment.MaxApplicants == appointment.Applicants.Count)
+            {
+                throw new AppointmentFullException();
+            }
+
+            appointment.Applicants.Add(user);
+            Update(appointment);
+        }
+    }
+
+    public class AppointmentFullException : Exception
+    {
+        public AppointmentFullException() : base("This appointment is already full:(") { }
     }
 }

@@ -18,7 +18,7 @@ namespace sof_feleves.Controllers
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly IServiceLogic _serviceLogic;
         private readonly IPostLogic _postLogic;
-        private readonly IApointmentLogic _appointmentLogic;
+        private readonly IAppointmentLogic _appointmentLogic;
 
         public HostController(
             ILogger<HostController> logger,
@@ -26,7 +26,7 @@ namespace sof_feleves.Controllers
             RoleManager<IdentityRole> roleManager,
             IServiceLogic serviceLogic,
             IPostLogic postLogic,
-            IApointmentLogic apointmentLogic
+            IAppointmentLogic apointmentLogic
             )
         {
             _logger = logger;
