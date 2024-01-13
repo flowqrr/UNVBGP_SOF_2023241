@@ -130,27 +130,34 @@ namespace sof_feleves.Controllers
                 }
             }
 
+            try
+            {
+                _postLogic.Create(post);
+            }
+            catch (ArgumentException ex)
+            {
+                return View(post);
+            }
+
+            return RedirectToAction("ServiceEdit", new { id = post.ServiceID });
+        }
 
         [HttpPost]
         public async Task<IActionResult> AddAppointment(Appointment appointment)
         {
-
-                try
-                {
-                    var asd = appointment.ServiceID;
-                    _appointmentLogic.Create(appointment);
+            try
+            {
+                var asd = appointment.ServiceID;
+                _appointmentLogic.Create(appointment);
 
                 return RedirectToAction("ServiceEdit", new { id = appointment.ServiceID });
             }
-                catch (ArgumentException ex)
-                {
-                    ModelState.AddModelError("", ex.Message);
-                }
+            catch (ArgumentException ex)
+            {
+                ModelState.AddModelError("", ex.Message);
+            }
 
             return View(appointment);
-        }
-
-            return RedirectToAction("ServiceEdit", new { id = post.ServiceID });
         }
 
         public IActionResult WriteMessage()
