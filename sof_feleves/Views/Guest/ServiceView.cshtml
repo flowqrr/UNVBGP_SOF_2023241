@@ -34,13 +34,17 @@
                     @foreach (var appointment in Model.Appointments)
                     {
                         <li class="list-group-item custom-card-dark text-light">
-                            <strong>@appointment.Date:</strong> @appointment.MaxApplicants
-                            @if (User.Identity.IsAuthenticated)
+                            <strong>@appointment.Date:</strong>  -  Number of applicants: @appointment.Applicants.Count / @appointment.MaxApplicants
+                            @if (User.Identity.IsAuthenticated && @appointment.Applicants.Count < @appointment.MaxApplicants)
                             {
                                 <form method="post" action="@Url.Action("ApplyForAppointment", "Guest")">
                                     @Html.Hidden("appointmentId", appointment.ID)
                                     <button type="submit" class="btn btn-two">Apply</button>
                                 </form>
+                            }
+                            else if (@appointment.Applicants.Count >= @appointment.MaxApplicants)
+                            {
+                                <p>This appointment is already full :(</p>
                             }
                         </li>
 

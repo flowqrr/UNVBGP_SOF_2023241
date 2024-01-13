@@ -52,7 +52,7 @@
                     @foreach (var appointment in Model.Appointments)
                     {
                         <li class="list-group-item custom-card-dark text-light">
-                            <strong>@appointment.Date:</strong> @appointment.MaxApplicants
+                            <strong>@appointment.Date:</strong>  -  Number of applicants: @appointment.Applicants.Count / @appointment.MaxApplicants
                             <a href="/Host/ManageApplicants?id=@appointment.ID" class="btn btn-two">View / manage applicants</a>
                             <a href="/Host/EditAppointment?id=@appointment.ID" class="btn btn-one">Edit</a>
                             <a href="/Host/DeleteAppointment?id=@appointment.ID" class="btn btn-three">Delete</a>

@@ -8,6 +8,11 @@
 }
 else
 {
+    <p>Number of applicants: @Model.Applicants.Count / @Model.MaxApplicants</p>
+    if (@Model.Applicants.Count == @Model.MaxApplicants)
+    {
+        <p>This appointment is full :)</p>
+    }
     <table class="table">
         <thead class ="text-light">
             <tr class ="text-light">
