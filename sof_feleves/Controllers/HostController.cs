@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
@@ -14,6 +15,7 @@ using System.Diagnostics;
 namespace sof_feleves.Controllers
 {
     [Authorize(Roles = "Host")]
+    [EnableCors("CorsPolicy")]
     public class HostController : Controller
     {
         private readonly ILogger<HostController> _logger;
@@ -64,7 +66,7 @@ namespace sof_feleves.Controllers
             try
             {
                 _serviceLogic.Create(service);
-                await _hub.Clients.All.SendAsync("ServiceCreated", service);
+                await _hub.Clients.All.SendAsync("ServiceCreated", new { ID = service.ID, Name = service.Name, Location = service.Location, HostName = $"{service.Host.FirstName} {service.Host.SurName}" });
             }
             catch (ArgumentException ex)
             {

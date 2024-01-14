@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Newtonsoft.Json;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -10,6 +11,7 @@ namespace sof_feleves.Models
         public string? SurName { get; set; }
 
         [NotMapped]
+        [JsonIgnore]
         public virtual ICollection<Service>? HostedServices { get; set; }
 
         [NotMapped]

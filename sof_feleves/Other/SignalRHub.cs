@@ -1,9 +1,12 @@
 ﻿using Microsoft.AspNetCore.SignalR;
 using System.Threading.Tasks;
 using System;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace sof_feleves.Other
 {
+    [Authorize]
     public class SignalRHub : Hub
     {
         public override Task OnConnectedAsync()
