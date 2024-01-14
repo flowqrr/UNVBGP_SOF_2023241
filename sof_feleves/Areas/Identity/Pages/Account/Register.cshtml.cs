@@ -16,9 +16,11 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using sof_feleves.Models;
+using sof_feleves.Other;
 
 namespace sof_feleves.Areas.Identity.Pages.Account
 {
@@ -30,13 +32,15 @@ namespace sof_feleves.Areas.Identity.Pages.Account
         private readonly IUserEmailStore<SiteUser> _emailStore;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
+        private readonly IHubContext<SignalRHub> _hub;
 
         public RegisterModel(
             UserManager<SiteUser> userManager,
             IUserStore<SiteUser> userStore,
             SignInManager<SiteUser> signInManager,
             ILogger<RegisterModel> logger,
-            IEmailSender emailSender)
+            IEmailSender emailSender,
+            IHubContext<SignalRHub> hub)
         {
             _userManager = userManager;
             _userStore = userStore;
@@ -44,6 +48,7 @@ namespace sof_feleves.Areas.Identity.Pages.Account
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
+            _hub = hub;
         }
 
         /// <summary>
@@ -146,6 +151,8 @@ namespace sof_feleves.Areas.Identity.Pages.Account
                         await _userManager.AddToRoleAsync(user, "Host");
                         _logger.LogInformation("User added to Host role.");
                     }
+
+                    await _hub.Clients.All.SendAsync("UserAdded", user.Id);
 
                     var userId = await _userManager.GetUserIdAsync(user);
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);

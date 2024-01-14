@@ -5,7 +5,7 @@
 <div class="container mt-5">
     <h2 class="mb-4">
         <span id="serviceName">@Model.Name</span>
-        <button class="btn btn-link lnk-one edit-btn"
+        <button class="btn btn-link lnk-one edit-btn shadow-none"
                 data-toggle="modal"
                 data-target="#editNameModal"
                 data-service-id="@Model.ID">
@@ -17,7 +17,7 @@
         <div class="card-body ">
             <h3 class="card-title">
                 Description
-                <button class="btn btn-link lnk-one edit-btn"
+                <button class="btn btn-link lnk-one edit-btn shadow-none"
                         data-toggle="modal"
                         data-target="#editDescriptionModal"
                         data-service-id="@Model.ID">
@@ -32,7 +32,7 @@
         <div class="card-body">
             <h3 class="card-title">
                 Location
-                <button class="btn btn-link lnk-one edit-btn"
+                <button class="btn btn-link lnk-one edit-btn shadow-none"
                         data-toggle="modal"
                         data-target="#editLocationModal"
                         data-service-id="@Model.ID">
@@ -53,9 +53,9 @@
                     {
                         <li class="list-group-item custom-card-dark text-light">
                             <strong>@appointment.Date:</strong>  -  Number of applicants: @appointment.Applicants.Count / @appointment.MaxApplicants
-                            <a href="/Host/ManageApplicants?id=@appointment.ID" class="btn btn-two">View / manage applicants</a>
-                            <a href="/Host/EditAppointment?id=@appointment.ID" class="btn btn-one">Edit</a>
-                            <a href="/Host/DeleteAppointment?id=@appointment.ID" class="btn btn-three">Delete</a>
+                            <a href="/Host/ManageApplicants?id=@appointment.ID" class="btn btn-two shadow-none">View / manage applicants</a>
+                            <a href="/Host/EditAppointment?id=@appointment.ID" class="btn btn-one shadow-none">Edit</a>
+                            <a href="/Host/DeleteAppointment?id=@appointment.ID" class="btn btn-three shadow-none">Delete</a>
                         </li>
                     }
                 </ul>
@@ -66,7 +66,7 @@
             }
             <form asp-action="AddAppointment" asp-controller="Host" method="get">
                 <input type="hidden" name="serviceId" value="@Model.ID" />
-                <button type="submit" class="btn btn-two">Add an appointment</button>
+                <button type="submit" class="btn btn-two shadow-none">Add an appointment</button>
             </form>
         </div>
     </div>
@@ -96,7 +96,7 @@
             }
             <form asp-action="AddPost" asp-controller="Host" method="get">
                 <input type="hidden" name="serviceId" value="@Model.ID" />
-                <button type="submit" class="btn btn-two">Add a post</button>
+                <button type="submit" class="btn btn-two shadow-none">Add a post</button>
             </form>
         </div>
     </div>
@@ -117,7 +117,7 @@
                         <label for="newName">New Name:</label>
                         <input type="text" class="form-control" id="newName" />
                     </div>
-                    <button type="submit" class="btn btn-two">Save</button>
+                        <button type="submit" class="btn btn-two shadow-none">Save</button>
                 </form>
             </div>
         </div>
@@ -140,7 +140,7 @@
                         <label for="newDescription">New Description:</label>
                         <textarea class="form-control" id="newDescription"></textarea>
                     </div>
-                    <button type="submit" class="btn btn-two">Save</button>
+                        <button type="submit" class="btn btn-two shadow-none">Save</button>
                 </form>
             </div>
         </div>
@@ -163,7 +163,7 @@
                         <label for="newLocation">New Location:</label>
                         <textarea class="form-control" id="newLocation"></textarea>
                     </div>
-                    <button type="submit" class="btn btn-two">Save</button>
+                        <button type="submit" class="btn btn-two shadow-none">Save</button>
                 </form>
             </div>
         </div>

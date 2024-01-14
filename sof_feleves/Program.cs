@@ -1,10 +1,12 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using sof_feleves.Logic;
 using sof_feleves.Logic.Interfaces;
 using sof_feleves.Models;
+using sof_feleves.Other;
 using sof_feleves.Repository;
 using sof_feleves.Repository.Repositories;
 using sof_feleves.Services;
@@ -51,6 +53,19 @@ builder.Services.AddTransient<IPostLogic, PostLogic>();
 builder.Services.AddTransient<IAppointmentLogic, AppointmentLogic>();
 
 builder.Services.AddControllersWithViews();
+builder.Services.AddControllers();
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("CorsPolicy",
+        builder => builder
+            .WithOrigins("http://localhost:64214", "https://localhost:7258")
+            .AllowAnyMethod()
+            .AllowAnyHeader()
+            .AllowCredentials());
+});
+
+builder.Services.AddSignalR();
 
 var app = builder.Build();
 
@@ -67,6 +82,8 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseCors("CorsPolicy");
+
 app.UseAuthentication();
 app.UseAuthorization();
 
@@ -74,5 +91,15 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 app.MapRazorPages();
+
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapControllerRoute(
+        name: "default",
+        pattern: "{controller=Home}/{action=Index}/{id?}");
+
+    endpoints.MapControllers();
+    endpoints.MapHub<SignalRHub>("/hub");
+});
 
 app.Run();
