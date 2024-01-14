@@ -145,14 +145,14 @@ namespace sof_feleves.Areas.Identity.Pages.Account
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User created a new account with password.");
-                    await _hub.Clients.All.SendAsync("UserAdded", user.Id);
 
                     if (Input.IsHost)
                     {
                         await _userManager.AddToRoleAsync(user, "Host");
                         _logger.LogInformation("User added to Host role.");
-                        await _hub.Clients.All.SendAsync("HostAdded", user.Id);
                     }
+
+                    await _hub.Clients.All.SendAsync("UserAdded", user.Id);
 
                     var userId = await _userManager.GetUserIdAsync(user);
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
