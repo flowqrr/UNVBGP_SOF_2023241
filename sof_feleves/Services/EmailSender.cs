@@ -22,7 +22,7 @@ namespace sof_feleves.Services
             {
                 MailMessage message = new MailMessage()
                 {
-                    From = new MailAddress("hostieapp@gmail.com"),
+                    From = new MailAddress("hostieapp@gmail.com", "Hostie App"),
                     Subject = subject,
                     IsBodyHtml = true,
                     Body = htmlMessage,
