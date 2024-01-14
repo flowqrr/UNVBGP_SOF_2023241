@@ -35,16 +35,24 @@
                     {
                         <li class="list-group-item custom-card-dark text-light">
                             <strong>@appointment.Date:</strong>  -  Number of applicants: @appointment.Applicants.Count / @appointment.MaxApplicants
-                            @if (User.Identity.IsAuthenticated && @appointment.Applicants.Count < @appointment.MaxApplicants)
+                            @if ((User.Identity.IsAuthenticated) && (@appointment.Applicants.Count < @appointment.MaxApplicants) && (!appointment.Applicants.Any(u => u.Email == User.Identity.Name)))
                             {
                                 <form method="post" action="@Url.Action("ApplyForAppointment", "Guest")">
                                     @Html.Hidden("appointmentId", appointment.ID)
                                     <button type="submit" class="btn btn-two shadow-none">Apply</button>
                                 </form>
                             }
-                            else if (@appointment.Applicants.Count >= @appointment.MaxApplicants)
+                            else if ((@appointment.Applicants.Count >= @appointment.MaxApplicants) && (!appointment.Applicants.Any(u => u.Email == User.Identity.Name)))
                             {
                                 <p>This appointment is already full :(</p>
+                            }
+                            else
+                            {
+                                <form method="post" action="@Url.Action("CancelAppointmentApplication", "Guest")">
+                                    @Html.Hidden("appointmentId", appointment.ID)
+                                    @Html.Hidden("serviceId", Model.ID)
+                                    <button type="submit" class="btn btn-three shadow-none">Cancel Application</button>
+                                </form>
                             }
                         </li>
 

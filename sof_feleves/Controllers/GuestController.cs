@@ -77,7 +77,7 @@ namespace sof_feleves.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CancelAppointmentApplication(string appointmentId)
+        public async Task<IActionResult> CancelAppointmentApplication(string appointmentId, string serviceId)
         {
             Appointment appointment = _appointmentLogic.Read(appointmentId);
             var user = await _userManager.GetUserAsync(User);
@@ -95,7 +95,13 @@ namespace sof_feleves.Controllers
                 return Ok(e.Message);
             }
 
-            return View("GuestAppointmentsView", user.Appointments);
+            if (serviceId == null)
+            {
+                return View("GuestAppointmentsView", user.Appointments);
+            }
+
+            Service loadedService = _serviceLogic.Read(serviceId);
+            return View("ServiceView", loadedService);
         }
 
         public IActionResult BuyPass()

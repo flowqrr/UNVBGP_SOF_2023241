@@ -2,9 +2,9 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using sof_feleves.Repository;
 
 #nullable disable
@@ -12,25 +12,25 @@ using sof_feleves.Repository;
 namespace sof_feleves.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240114132917_Descriptions")]
-    partial class Descriptions
+    [Migration("20240114165720_InitLocalDb")]
+    partial class InitLocalDb
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "6.0.23")
-                .HasAnnotation("Relational:MaxIdentifierLength", 63);
+                .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
-            NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
+            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
             modelBuilder.Entity("AppointmentSiteUser", b =>
                 {
                     b.Property<string>("ApplicantsId")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("AppointmentsID")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("ApplicantsId", "AppointmentsID");
 
@@ -42,25 +42,26 @@ namespace sof_feleves.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
                     b.Property<string>("Id")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
                         .HasMaxLength(256)
-                        .HasColumnType("character varying(256)");
+                        .HasColumnType("nvarchar(256)");
 
                     b.Property<string>("NormalizedName")
                         .HasMaxLength(256)
-                        .HasColumnType("character varying(256)");
+                        .HasColumnType("nvarchar(256)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("NormalizedName")
                         .IsUnique()
-                        .HasDatabaseName("RoleNameIndex");
+                        .HasDatabaseName("RoleNameIndex")
+                        .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles", (string)null);
 
@@ -68,14 +69,14 @@ namespace sof_feleves.Migrations
                         new
                         {
                             Id = "1",
-                            ConcurrencyStamp = "a28cc7a0-909b-477f-b9a4-eae545f501df",
+                            ConcurrencyStamp = "d0e2b3dc-f76c-41d7-b422-c401dfecab6f",
                             Name = "Host",
                             NormalizedName = "HOST"
                         },
                         new
                         {
                             Id = "0",
-                            ConcurrencyStamp = "c40cd77b-498f-4501-a62f-a5cc868c2a0c",
+                            ConcurrencyStamp = "753b4a61-aeb9-4b23-bcd8-9159aa9822a4",
                             Name = "Guest",
                             NormalizedName = "GUEST"
                         });
@@ -85,19 +86,19 @@ namespace sof_feleves.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
+                        .HasColumnType("int");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("ClaimType")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ClaimValue")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("RoleId")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
@@ -110,19 +111,19 @@ namespace sof_feleves.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
+                        .HasColumnType("int");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("ClaimType")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ClaimValue")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UserId")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
@@ -135,18 +136,18 @@ namespace sof_feleves.Migrations
                 {
                     b.Property<string>("LoginProvider")
                         .HasMaxLength(128)
-                        .HasColumnType("character varying(128)");
+                        .HasColumnType("nvarchar(128)");
 
                     b.Property<string>("ProviderKey")
                         .HasMaxLength(128)
-                        .HasColumnType("character varying(128)");
+                        .HasColumnType("nvarchar(128)");
 
                     b.Property<string>("ProviderDisplayName")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UserId")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("LoginProvider", "ProviderKey");
 
@@ -158,10 +159,10 @@ namespace sof_feleves.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
                 {
                     b.Property<string>("UserId")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("RoleId")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("UserId", "RoleId");
 
@@ -195,18 +196,18 @@ namespace sof_feleves.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
                     b.Property<string>("UserId")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("LoginProvider")
                         .HasMaxLength(128)
-                        .HasColumnType("character varying(128)");
+                        .HasColumnType("nvarchar(128)");
 
                     b.Property<string>("Name")
                         .HasMaxLength(128)
-                        .HasColumnType("character varying(128)");
+                        .HasColumnType("nvarchar(128)");
 
                     b.Property<string>("Value")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("UserId", "LoginProvider", "Name");
 
@@ -216,17 +217,17 @@ namespace sof_feleves.Migrations
             modelBuilder.Entity("sof_feleves.Models.Appointment", b =>
                 {
                     b.Property<string>("ID")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime>("Date")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("datetime2");
 
                     b.Property<int>("MaxApplicants")
-                        .HasColumnType("integer");
+                        .HasColumnType("int");
 
                     b.Property<string>("ServiceID")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("ID");
 
@@ -282,26 +283,26 @@ namespace sof_feleves.Migrations
             modelBuilder.Entity("sof_feleves.Models.Post", b =>
                 {
                     b.Property<string>("ID")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("ImageContentType")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<byte[]>("ImageData")
-                        .HasColumnType("bytea");
+                        .HasColumnType("varbinary(max)");
 
                     b.Property<string>("ServiceID")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Text")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("nvarchar(100)");
 
                     b.HasKey("ID");
 
@@ -343,22 +344,22 @@ namespace sof_feleves.Migrations
             modelBuilder.Entity("sof_feleves.Models.Service", b =>
                 {
                     b.Property<string>("ID")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Description")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("HostID")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Location")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("nvarchar(100)");
 
                     b.HasKey("ID");
 
@@ -404,66 +405,66 @@ namespace sof_feleves.Migrations
             modelBuilder.Entity("sof_feleves.Models.SiteUser", b =>
                 {
                     b.Property<string>("Id")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("AccessFailedCount")
-                        .HasColumnType("integer");
+                        .HasColumnType("int");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Email")
                         .HasMaxLength(256)
-                        .HasColumnType("character varying(256)");
+                        .HasColumnType("nvarchar(256)");
 
                     b.Property<bool>("EmailConfirmed")
-                        .HasColumnType("boolean");
+                        .HasColumnType("bit");
 
                     b.Property<string>("FirstName")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("LockoutEnabled")
-                        .HasColumnType("boolean");
+                        .HasColumnType("bit");
 
                     b.Property<DateTimeOffset?>("LockoutEnd")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("datetimeoffset");
 
                     b.Property<string>("NormalizedEmail")
                         .HasMaxLength(256)
-                        .HasColumnType("character varying(256)");
+                        .HasColumnType("nvarchar(256)");
 
                     b.Property<string>("NormalizedUserName")
                         .HasMaxLength(256)
-                        .HasColumnType("character varying(256)");
+                        .HasColumnType("nvarchar(256)");
 
                     b.Property<string>("PasswordHash")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PhoneNumber")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("PhoneNumberConfirmed")
-                        .HasColumnType("boolean");
+                        .HasColumnType("bit");
 
                     b.Property<string>("ProfilePicContentType")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<byte[]>("ProfilePicData")
-                        .HasColumnType("bytea");
+                        .HasColumnType("varbinary(max)");
 
                     b.Property<string>("SecurityStamp")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("SurName")
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("TwoFactorEnabled")
-                        .HasColumnType("boolean");
+                        .HasColumnType("bit");
 
                     b.Property<string>("UserName")
                         .HasMaxLength(256)
-                        .HasColumnType("character varying(256)");
+                        .HasColumnType("nvarchar(256)");
 
                     b.HasKey("Id");
 
@@ -472,7 +473,8 @@ namespace sof_feleves.Migrations
 
                     b.HasIndex("NormalizedUserName")
                         .IsUnique()
-                        .HasDatabaseName("UserNameIndex");
+                        .HasDatabaseName("UserNameIndex")
+                        .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
 
@@ -481,15 +483,15 @@ namespace sof_feleves.Migrations
                         {
                             Id = "yoga_host1",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "1157d35e-c9df-43cf-8536-c444913d9e4b",
+                            ConcurrencyStamp = "2a7dee71-ef51-4ecc-af35-dea426a7b684",
                             Email = "yoga@yoga.yoga",
                             EmailConfirmed = false,
                             FirstName = "Yoga",
                             LockoutEnabled = false,
                             NormalizedUserName = "YOGA",
-                            PasswordHash = "AQAAAAEAACcQAAAAEHOqt7m2os98IwtQGah+ulmb6WrY/m9+bmEuoLn75APlHZ0LIjAnkpAOM7thfnUdDQ==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEICZ12XvGDqfBQ4jKuuQq/lqsfNzOpRGa0pVCb0VJ26hyO9wwdZ1ovD7NK3bPJ6vqg==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "e1e9a5ce-cd27-4de5-8b2c-e768e9238883",
+                            SecurityStamp = "0fd8d2be-ae6c-4a66-a3bc-5d0ff65c1399",
                             SurName = "Master",
                             TwoFactorEnabled = false
                         },
@@ -497,15 +499,15 @@ namespace sof_feleves.Migrations
                         {
                             Id = "dance_host1",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "21e9df3f-6963-44db-8d5d-f0358a89cdd1",
+                            ConcurrencyStamp = "6d7663e9-d63e-45ce-a7e9-42afce2749d3",
                             Email = "dance@dance.dance",
                             EmailConfirmed = false,
                             FirstName = "Dance",
                             LockoutEnabled = false,
                             NormalizedUserName = "DANCE",
-                            PasswordHash = "AQAAAAEAACcQAAAAEA5VtketXWdub9LPK5iTDjpD7s4BHtcjCEU6FvIfFy246CXVqm6Xis80BUqPkKWcrA==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEPfXKZ8UYLC9szKVwmO0fy9PrPna2yC4jb0ASL1NEqfIpwDX13KTnnPA9iWf7zCw0w==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "2d246b74-38e1-426c-b57d-d64f253c020d",
+                            SecurityStamp = "968876e3-bcca-4fa7-9560-e4013ffd4b3e",
                             SurName = "Master",
                             TwoFactorEnabled = false
                         },
@@ -513,15 +515,15 @@ namespace sof_feleves.Migrations
                         {
                             Id = "nail_host1",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "728d9d2b-9794-49d2-9a4d-31f214ec72d6",
+                            ConcurrencyStamp = "91826431-5b55-416d-ab74-9de2eb57d856",
                             Email = "nail@nail.nail",
                             EmailConfirmed = false,
                             FirstName = "Nail",
                             LockoutEnabled = false,
                             NormalizedUserName = "NAIL",
-                            PasswordHash = "AQAAAAEAACcQAAAAEGsBauVu4sEoNXz1wympsdXBHbyjxwXgex0JI7GGDduhYsSp4rEuyAue5oR4P2HIyg==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEDsKbQ1LFjJZC3nDASYcnbgo77Zo+/B2D6smVKOHmLqvGVShG5m22AfRVH58mRlTkw==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "db885e7f-2f4a-4d10-bbd1-83b5f8c3b47c",
+                            SecurityStamp = "26a53218-1f98-4af9-b147-7f1d8de44d66",
                             SurName = "Master",
                             TwoFactorEnabled = false
                         },
@@ -529,15 +531,15 @@ namespace sof_feleves.Migrations
                         {
                             Id = "chiropractor_host1",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "a0da8bb6-0d6d-45aa-a050-27102a87cfb3",
+                            ConcurrencyStamp = "97d95a05-de5d-4dd9-ad98-859154542e2f",
                             Email = "chiropractor@chiropractor.chiropractor",
                             EmailConfirmed = false,
                             FirstName = "Chiropractor",
                             LockoutEnabled = false,
                             NormalizedUserName = "CHIROPRACTOR",
-                            PasswordHash = "AQAAAAEAACcQAAAAEGEx6hR+7PBpnNOCLAEW1yAyeSlakjVWt+XZcRpq2g/5QhZK/YyZTdGZherJi0tokw==",
+                            PasswordHash = "AQAAAAEAACcQAAAAELjA9UzQnOUlT8bgUXBOYzWK4QZnBwF6NzShBgCx0sTwj8EcROBHRwxlU6UGaSCn+g==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "83284fcb-5900-41ef-bec7-1d7ddb959462",
+                            SecurityStamp = "b7228121-8e5e-41d9-81f7-2a3eb37e562b",
                             SurName = "Master",
                             TwoFactorEnabled = false
                         });

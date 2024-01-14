@@ -1,12 +1,11 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
-using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
 namespace sof_feleves.Migrations
 {
-    public partial class Init : Migration
+    public partial class InitLocalDb : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -14,10 +13,10 @@ namespace sof_feleves.Migrations
                 name: "AspNetRoles",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "text", nullable: false),
-                    Name = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
-                    NormalizedName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
-                    ConcurrencyStamp = table.Column<string>(type: "text", nullable: true)
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    NormalizedName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    ConcurrencyStamp = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -28,25 +27,25 @@ namespace sof_feleves.Migrations
                 name: "AspNetUsers",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "text", nullable: false),
-                    FirstName = table.Column<string>(type: "text", nullable: true),
-                    SurName = table.Column<string>(type: "text", nullable: true),
-                    ProfilePicContentType = table.Column<string>(type: "text", nullable: true),
-                    ProfilePicData = table.Column<byte[]>(type: "bytea", nullable: true),
-                    UserName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
-                    NormalizedUserName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
-                    Email = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
-                    NormalizedEmail = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
-                    EmailConfirmed = table.Column<bool>(type: "boolean", nullable: false),
-                    PasswordHash = table.Column<string>(type: "text", nullable: true),
-                    SecurityStamp = table.Column<string>(type: "text", nullable: true),
-                    ConcurrencyStamp = table.Column<string>(type: "text", nullable: true),
-                    PhoneNumber = table.Column<string>(type: "text", nullable: true),
-                    PhoneNumberConfirmed = table.Column<bool>(type: "boolean", nullable: false),
-                    TwoFactorEnabled = table.Column<bool>(type: "boolean", nullable: false),
-                    LockoutEnd = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
-                    LockoutEnabled = table.Column<bool>(type: "boolean", nullable: false),
-                    AccessFailedCount = table.Column<int>(type: "integer", nullable: false)
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    FirstName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    SurName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ProfilePicContentType = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ProfilePicData = table.Column<byte[]>(type: "varbinary(max)", nullable: true),
+                    UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    NormalizedEmail = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    EmailConfirmed = table.Column<bool>(type: "bit", nullable: false),
+                    PasswordHash = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    SecurityStamp = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ConcurrencyStamp = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PhoneNumberConfirmed = table.Column<bool>(type: "bit", nullable: false),
+                    TwoFactorEnabled = table.Column<bool>(type: "bit", nullable: false),
+                    LockoutEnd = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
+                    LockoutEnabled = table.Column<bool>(type: "bit", nullable: false),
+                    AccessFailedCount = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -57,11 +56,11 @@ namespace sof_feleves.Migrations
                 name: "AspNetRoleClaims",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    RoleId = table.Column<string>(type: "text", nullable: false),
-                    ClaimType = table.Column<string>(type: "text", nullable: true),
-                    ClaimValue = table.Column<string>(type: "text", nullable: true)
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    RoleId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    ClaimType = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ClaimValue = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -78,11 +77,11 @@ namespace sof_feleves.Migrations
                 name: "AspNetUserClaims",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    UserId = table.Column<string>(type: "text", nullable: false),
-                    ClaimType = table.Column<string>(type: "text", nullable: true),
-                    ClaimValue = table.Column<string>(type: "text", nullable: true)
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    ClaimType = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ClaimValue = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -99,10 +98,10 @@ namespace sof_feleves.Migrations
                 name: "AspNetUserLogins",
                 columns: table => new
                 {
-                    LoginProvider = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: false),
-                    ProviderKey = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: false),
-                    ProviderDisplayName = table.Column<string>(type: "text", nullable: true),
-                    UserId = table.Column<string>(type: "text", nullable: false)
+                    LoginProvider = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
+                    ProviderKey = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
+                    ProviderDisplayName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -119,8 +118,8 @@ namespace sof_feleves.Migrations
                 name: "AspNetUserRoles",
                 columns: table => new
                 {
-                    UserId = table.Column<string>(type: "text", nullable: false),
-                    RoleId = table.Column<string>(type: "text", nullable: false)
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    RoleId = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -143,10 +142,10 @@ namespace sof_feleves.Migrations
                 name: "AspNetUserTokens",
                 columns: table => new
                 {
-                    UserId = table.Column<string>(type: "text", nullable: false),
-                    LoginProvider = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: false),
-                    Name = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: false),
-                    Value = table.Column<string>(type: "text", nullable: true)
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    LoginProvider = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
+                    Value = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -163,11 +162,11 @@ namespace sof_feleves.Migrations
                 name: "Services",
                 columns: table => new
                 {
-                    ID = table.Column<string>(type: "text", nullable: false),
-                    Name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
-                    Description = table.Column<string>(type: "text", nullable: true),
-                    Location = table.Column<string>(type: "text", nullable: true),
-                    HostID = table.Column<string>(type: "text", nullable: false)
+                    ID = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Location = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    HostID = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -184,10 +183,10 @@ namespace sof_feleves.Migrations
                 name: "Appointments",
                 columns: table => new
                 {
-                    ID = table.Column<string>(type: "text", nullable: false),
-                    Date = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    MaxApplicants = table.Column<int>(type: "integer", nullable: false),
-                    ServiceID = table.Column<string>(type: "text", nullable: false)
+                    ID = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Date = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    MaxApplicants = table.Column<int>(type: "int", nullable: false),
+                    ServiceID = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -204,12 +203,12 @@ namespace sof_feleves.Migrations
                 name: "Posts",
                 columns: table => new
                 {
-                    ID = table.Column<string>(type: "text", nullable: false),
-                    Title = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
-                    Text = table.Column<string>(type: "text", nullable: false),
-                    ImageContentType = table.Column<string>(type: "text", nullable: true),
-                    ImageData = table.Column<byte[]>(type: "bytea", nullable: true),
-                    ServiceID = table.Column<string>(type: "text", nullable: false)
+                    ID = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Title = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Text = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ImageContentType = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ImageData = table.Column<byte[]>(type: "varbinary(max)", nullable: true),
+                    ServiceID = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -226,8 +225,8 @@ namespace sof_feleves.Migrations
                 name: "AppointmentSiteUser",
                 columns: table => new
                 {
-                    ApplicantsId = table.Column<string>(type: "text", nullable: false),
-                    AppointmentsID = table.Column<string>(type: "text", nullable: false)
+                    ApplicantsId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    AppointmentsID = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -243,7 +242,7 @@ namespace sof_feleves.Migrations
                         column: x => x.ApplicantsId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.NoAction);
                 });
 
             migrationBuilder.InsertData(
@@ -251,8 +250,8 @@ namespace sof_feleves.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "0", "ab4a94f6-6fa2-402b-b500-7b65f2116e7f", "Guest", "GUEST" },
-                    { "1", "ccf38569-278f-4617-b6aa-84b54e3cb7ce", "Host", "HOST" }
+                    { "0", "753b4a61-aeb9-4b23-bcd8-9159aa9822a4", "Guest", "GUEST" },
+                    { "1", "d0e2b3dc-f76c-41d7-b422-c401dfecab6f", "Host", "HOST" }
                 });
 
             migrationBuilder.InsertData(
@@ -260,10 +259,10 @@ namespace sof_feleves.Migrations
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "FirstName", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "ProfilePicContentType", "ProfilePicData", "SecurityStamp", "SurName", "TwoFactorEnabled", "UserName" },
                 values: new object[,]
                 {
-                    { "chiropractor_host1", 0, "4a817f07-8291-48ac-88a7-b7b777ce97d1", "chiropractor@chiropractor.chiropractor", false, "Chiropractor", false, null, null, "CHIROPRACTOR", "AQAAAAEAACcQAAAAEHYZCGR3cvc1KbDbLZSHsh3wWWMgJlhRyK0j8Xm39e27pcbPmkvDRF67tZGeSl20dw==", null, false, null, null, "7cf55ea8-12fd-4f39-aeee-ffb5da39c2bc", "Master", false, null },
-                    { "dance_host1", 0, "1c476b98-b02e-4b46-a31b-66ef80a3dad9", "dance@dance.dance", false, "Dance", false, null, null, "DANCE", "AQAAAAEAACcQAAAAEOXDhceZZ+2WpnvnubR7l27M+6OaAO9y9lx8d5rpgHXz3hGBR3+EEoyEMtgv85Pnlw==", null, false, null, null, "2a4225e2-3102-4426-8ac5-0283b614a2da", "Master", false, null },
-                    { "nail_host1", 0, "bc6a729e-1cb4-407b-a86b-9b8495016cd9", "nail@nail.nail", false, "Nail", false, null, null, "NAIL", "AQAAAAEAACcQAAAAECOLNpoLC99kvrre8UIr+ZRNU8n8k4fMq0mMn853/3KRAZDLr71FuGmyYrJe+W/Rjg==", null, false, null, null, "b9d4c590-95a8-44ed-b690-69224741671d", "Master", false, null },
-                    { "yoga_host1", 0, "da5963ba-f6ee-4eeb-a8f0-939362378a2b", "yoga@yoga.yoga", false, "Yoga", false, null, null, "YOGA", "AQAAAAEAACcQAAAAEE5wYowOTJcN+35YK5LwXWNF46N6JnMi8NSkyo79Ovx6dFkIWOkLvP0bJD/yvOEQQw==", null, false, null, null, "f836567c-f47c-4ac1-af5b-41504cdc2787", "Master", false, null }
+                    { "chiropractor_host1", 0, "97d95a05-de5d-4dd9-ad98-859154542e2f", "chiropractor@chiropractor.chiropractor", false, "Chiropractor", false, null, null, "CHIROPRACTOR", "AQAAAAEAACcQAAAAELjA9UzQnOUlT8bgUXBOYzWK4QZnBwF6NzShBgCx0sTwj8EcROBHRwxlU6UGaSCn+g==", null, false, null, null, "b7228121-8e5e-41d9-81f7-2a3eb37e562b", "Master", false, null },
+                    { "dance_host1", 0, "6d7663e9-d63e-45ce-a7e9-42afce2749d3", "dance@dance.dance", false, "Dance", false, null, null, "DANCE", "AQAAAAEAACcQAAAAEPfXKZ8UYLC9szKVwmO0fy9PrPna2yC4jb0ASL1NEqfIpwDX13KTnnPA9iWf7zCw0w==", null, false, null, null, "968876e3-bcca-4fa7-9560-e4013ffd4b3e", "Master", false, null },
+                    { "nail_host1", 0, "91826431-5b55-416d-ab74-9de2eb57d856", "nail@nail.nail", false, "Nail", false, null, null, "NAIL", "AQAAAAEAACcQAAAAEDsKbQ1LFjJZC3nDASYcnbgo77Zo+/B2D6smVKOHmLqvGVShG5m22AfRVH58mRlTkw==", null, false, null, null, "26a53218-1f98-4af9-b147-7f1d8de44d66", "Master", false, null },
+                    { "yoga_host1", 0, "2a7dee71-ef51-4ecc-af35-dea426a7b684", "yoga@yoga.yoga", false, "Yoga", false, null, null, "YOGA", "AQAAAAEAACcQAAAAEICZ12XvGDqfBQ4jKuuQq/lqsfNzOpRGa0pVCb0VJ26hyO9wwdZ1ovD7NK3bPJ6vqg==", null, false, null, null, "0fd8d2be-ae6c-4a66-a3bc-5d0ff65c1399", "Master", false, null }
                 });
 
             migrationBuilder.InsertData(
@@ -282,10 +281,10 @@ namespace sof_feleves.Migrations
                 columns: new[] { "ID", "Description", "HostID", "Location", "Name" },
                 values: new object[,]
                 {
-                    { "chiropractor1", null, "chiropractor_host1", "New York", "Chiropractor" },
-                    { "dance_class1", null, "dance_host1", "Dance Studio in Paris", "Dance class" },
-                    { "nail_salon1", null, "nail_host1", "London Nail Salon", "Nail salon" },
-                    { "yoga_class1", null, "yoga_host1", "Yoga Studio in Budapest", "Yoga class" }
+                    { "chiropractor1", "Certified chiropractor - based in New York", "chiropractor_host1", "New York", "Chiropractor" },
+                    { "dance_class1", "Contemporary dance class for creative minds", "dance_host1", "Dance Studio in Paris", "Dance class" },
+                    { "nail_salon1", "Luxury Nail salon located in the heart of London<3", "nail_host1", "London Nail Salon", "Nail salon" },
+                    { "yoga_class1", "Yoga for your body and mind at the yoga studio with your yoga host", "yoga_host1", "Yoga Studio in Budapest", "Yoga class" }
                 });
 
             migrationBuilder.InsertData(
@@ -331,7 +330,8 @@ namespace sof_feleves.Migrations
                 name: "RoleNameIndex",
                 table: "AspNetRoles",
                 column: "NormalizedName",
-                unique: true);
+                unique: true,
+                filter: "[NormalizedName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetUserClaims_UserId",
@@ -357,7 +357,8 @@ namespace sof_feleves.Migrations
                 name: "UserNameIndex",
                 table: "AspNetUsers",
                 column: "NormalizedUserName",
-                unique: true);
+                unique: true,
+                filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Posts_ServiceID",

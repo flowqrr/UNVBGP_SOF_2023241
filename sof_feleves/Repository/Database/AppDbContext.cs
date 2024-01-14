@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using sof_feleves.Models;
+using Syncfusion.EJ2.Diagrams;
+using Syncfusion.EJ2.Navigations;
 using System.Reflection.Emit;
 
 namespace sof_feleves.Repository
@@ -58,10 +60,10 @@ namespace sof_feleves.Repository
                 );
 
             builder.Entity<Post>().HasData(
-               new Post { ID = "post1", Text = "Yoga for your body and mind at the yoga studio with your yoga host", ServiceID = "yoga_class1", Title = "Yoga classes"},
-               new Post { ID = "post2", Text = "Unfortunately I have to cancel today's dance class because I have COVID. :( See you guys next week!", ServiceID = "dance_class1", Title = "TODAY'S CLASS IS CANCELED!"},
+               new Post { ID = "post1", Text = "Yoga for your body and mind at the yoga studio with your yoga host", ServiceID = "yoga_class1", Title = "Yoga classes" },
+               new Post { ID = "post2", Text = "Unfortunately I have to cancel today's dance class because I have COVID. :( See you guys next week!", ServiceID = "dance_class1", Title = "TODAY'S CLASS IS CANCELED!" },
                new Post { ID = "post3", Text = "Hello guys, someone left their Gucci bag at my studio. Please come pick it up!", ServiceID = "nail_salon1", Title = "Gucci bag left at studio!!" },
-               new Post { ID = "post4", Text = "Dear Guests, please make sure you don't make a mess after yourself when using the toilet at my office. I had to clean for hours after someone pooped there...", ServiceID = "chiropractor1", Title = "Someone clogged the toilet at my office..."}
+               new Post { ID = "post4", Text = "Dear Guests, please make sure you don't make a mess after yourself when using the toilet at my office. I had to clean for hours after someone pooped there...", ServiceID = "chiropractor1", Title = "Someone clogged the toilet at my office..." }
                );
 
             builder.Entity<Appointment>()

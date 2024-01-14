@@ -14,17 +14,15 @@ using System.Security.Claims;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
 builder.Services.AddDbContext<AppDbContext>(options =>
     options
-    .UseNpgsql(connectionString)
+    .UseSqlServer(connectionString)
     .UseLazyLoadingProxies());
 
 builder.Services.AddDefaultIdentity<SiteUser>(options =>
 {
-    // TODO: turn on
     options.SignIn.RequireConfirmedAccount = true;
     options.Password.RequireDigit = false;
     options.Password.RequiredLength = 4;
