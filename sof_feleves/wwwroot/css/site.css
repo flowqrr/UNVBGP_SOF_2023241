@@ -56,13 +56,13 @@ body {
     }
 
 .btn-two {
-    padding: 3px 3px; 
+    padding: 3px 3px;
     margin: 5px;
     background-color: #298d8b;
-    color: #ffffff; 
+    color: #ffffff;
 }
     .btn-two:hover {
-        background-color: #1b6b69; 
+        background-color: #1b6b69;
         color: #ffffff;
     }
 
@@ -88,3 +88,12 @@ body {
         opacity: 1;
     }
 
+.custom-toggler-icon {
+    background-color: white;
+    color: white;
+}
+
+.custom-toggler {
+    background-color: white;
+    border: none;
+}

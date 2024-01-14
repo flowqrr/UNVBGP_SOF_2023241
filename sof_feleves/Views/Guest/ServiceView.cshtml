@@ -39,7 +39,7 @@
                             {
                                 <form method="post" action="@Url.Action("ApplyForAppointment", "Guest")">
                                     @Html.Hidden("appointmentId", appointment.ID)
-                                    <button type="submit" class="btn btn-two">Apply</button>
+                                    <button type="submit" class="btn btn-two shadow-none">Apply</button>
                                 </form>
                             }
                             else if (@appointment.Applicants.Count >= @appointment.MaxApplicants)
