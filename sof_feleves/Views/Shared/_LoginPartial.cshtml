@@ -14,7 +14,7 @@
                 {
                     <img src="@Url.Action("GetProfilePic", "Home", new { userid = user.Id })" alt="Profile Picture" style="width: 30px; height: 30px; border-radius: 50%;" />
                 }
-                Hello @User.Identity?.Name!
+                Signed in as @User.Identity?.Name
             </a>
         </li>
         <li class="nav-item">
