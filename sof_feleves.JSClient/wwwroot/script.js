@@ -1,5 +1,4 @@
 ﻿document.addEventListener('DOMContentLoaded', function () {
-    // Initialize SignalR connection and other variables
     let connection = null;
 
     let servicesCount = 0;
@@ -7,10 +6,8 @@
     let hostsCount = 0;
     let totalUsers = 0;
 
-    // SignalR table variable
     let totalUsersTable;
 
-    // Function to set up SignalR connection
     function setupSignalR() {
         connection = new signalR.HubConnectionBuilder()
             .withUrl("https://localhost:7258/hub")
@@ -30,7 +27,7 @@
         start();
     }
 
-    // Function to start the SignalR connection
+
     async function start() {
         try {
             await connection.start();
@@ -41,7 +38,6 @@
         }
     }
 
-    // Function to fetch user data
     async function getData() {
         await fetch('https://localhost:7258/api/statistics/servicesCount')
             .then(x => x.json())
@@ -70,7 +66,7 @@
         updateTable(getCurrentTime(), totalUsers, hostsCount, guestsCount, servicesCount);
     }
 
-    // Function to get current time
+
     function getCurrentTime() {
         const now = new Date();
         const hours = now.getHours().toString().padStart(2, '0');
@@ -79,7 +75,7 @@
         return `${hours}:${minutes}:${seconds}`;
     }
 
-    // Function to update the HTML table
+
     async function updateTable(time, totalUsers, hostsCount, guestsCount, servicesCount) {
         const table = document.getElementById('data-table');
         if (!table) {
@@ -87,53 +83,45 @@
             return;
         }
 
-        // Check if there's an existing row to update (e.g., based on a unique identifier)
+
         let existingRow = findExistingRowToUpdate(table, time);
 
         if (!existingRow) {
-            // If no existing row found, insert a new row
-            const newRow = table.insertRow(1); // Insert as the second row (index 1)
 
-            // Create table cells for each data point
+            const newRow = table.insertRow(1);
+
+
             const timeCell = newRow.insertCell(0);
             const totalUsersCell = newRow.insertCell(1);
             const hostsCountCell = newRow.insertCell(2);
             const guestsCountCell = newRow.insertCell(3);
             const servicesCountCell = newRow.insertCell(4);
 
-            // Set the data in each cell
             timeCell.textContent = time;
             totalUsersCell.textContent = totalUsers;
             hostsCountCell.textContent = hostsCount;
             guestsCountCell.textContent = guestsCount;
             servicesCountCell.textContent = servicesCount;
         } else {
-            // If an existing row is found, update its cell values
             existingRow.cells[0].textContent = time;
             existingRow.cells[1].textContent = totalUsers;
             existingRow.cells[2].textContent = hostsCount;
             existingRow.cells[3].textContent = guestsCount;
             existingRow.cells[4].textContent = servicesCount;
         }
-
-        // Limit the number of rows displayed (e.g., keep the last 10 rows)
         const maxRows = 10;
         while (table.rows.length > maxRows) {
             table.deleteRow(maxRows);
         }
     }
-
-    // Function to find an existing row based on a unique identifier (e.g., time)
     function findExistingRowToUpdate(table, time) {
         for (let i = 1; i < table.rows.length; i++) {
             if (table.rows[i].cells[0].textContent === time) {
                 return table.rows[i];
             }
         }
-        return null; // No existing row found
+        return null; 
     }
-
-    // SignalR code
     setupSignalR();
     getData();
 });
