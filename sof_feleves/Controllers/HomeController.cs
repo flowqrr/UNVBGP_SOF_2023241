@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using sof_feleves.Logic.Interfaces;
-using sof_feleves.Migrations;
 using sof_feleves.Models;
 using System.Diagnostics;
 

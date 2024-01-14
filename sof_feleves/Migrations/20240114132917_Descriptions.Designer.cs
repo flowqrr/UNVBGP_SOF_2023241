@@ -12,8 +12,8 @@ using sof_feleves.Repository;
 namespace sof_feleves.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20231123214920_posts")]
-    partial class posts
+    [Migration("20240114132917_Descriptions")]
+    partial class Descriptions
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -68,14 +68,14 @@ namespace sof_feleves.Migrations
                         new
                         {
                             Id = "1",
-                            ConcurrencyStamp = "000dcb17-441b-4114-bc86-f4cc8363bd94",
+                            ConcurrencyStamp = "a28cc7a0-909b-477f-b9a4-eae545f501df",
                             Name = "Host",
                             NormalizedName = "HOST"
                         },
                         new
                         {
                             Id = "0",
-                            ConcurrencyStamp = "24451565-5abd-465b-a221-72e3dd5d1818",
+                            ConcurrencyStamp = "c40cd77b-498f-4501-a62f-a5cc868c2a0c",
                             Name = "Guest",
                             NormalizedName = "GUEST"
                         });
@@ -233,12 +233,62 @@ namespace sof_feleves.Migrations
                     b.HasIndex("ServiceID");
 
                     b.ToTable("Appointments");
+
+                    b.HasData(
+                        new
+                        {
+                            ID = "apt1",
+                            Date = new DateTime(2025, 6, 28, 10, 0, 0, 0, DateTimeKind.Utc),
+                            MaxApplicants = 10,
+                            ServiceID = "yoga_class1"
+                        },
+                        new
+                        {
+                            ID = "apt2",
+                            Date = new DateTime(2025, 6, 28, 12, 0, 0, 0, DateTimeKind.Utc),
+                            MaxApplicants = 10,
+                            ServiceID = "yoga_class1"
+                        },
+                        new
+                        {
+                            ID = "apt3",
+                            Date = new DateTime(2025, 5, 5, 13, 30, 0, 0, DateTimeKind.Utc),
+                            MaxApplicants = 1,
+                            ServiceID = "nail_salon1"
+                        },
+                        new
+                        {
+                            ID = "apt4",
+                            Date = new DateTime(2025, 7, 28, 19, 0, 0, 0, DateTimeKind.Utc),
+                            MaxApplicants = 25,
+                            ServiceID = "dance_class1"
+                        },
+                        new
+                        {
+                            ID = "apt5",
+                            Date = new DateTime(2025, 7, 29, 19, 0, 0, 0, DateTimeKind.Utc),
+                            MaxApplicants = 25,
+                            ServiceID = "dance_class1"
+                        },
+                        new
+                        {
+                            ID = "apt6",
+                            Date = new DateTime(2025, 8, 28, 19, 0, 0, 0, DateTimeKind.Utc),
+                            MaxApplicants = 25,
+                            ServiceID = "dance_class1"
+                        });
                 });
 
             modelBuilder.Entity("sof_feleves.Models.Post", b =>
                 {
                     b.Property<string>("ID")
                         .HasColumnType("text");
+
+                    b.Property<string>("ImageContentType")
+                        .HasColumnType("text");
+
+                    b.Property<byte[]>("ImageData")
+                        .HasColumnType("bytea");
 
                     b.Property<string>("ServiceID")
                         .IsRequired()
@@ -248,11 +298,46 @@ namespace sof_feleves.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
                     b.HasKey("ID");
 
                     b.HasIndex("ServiceID");
 
                     b.ToTable("Posts");
+
+                    b.HasData(
+                        new
+                        {
+                            ID = "post1",
+                            ServiceID = "yoga_class1",
+                            Text = "Yoga for your body and mind at the yoga studio with your yoga host",
+                            Title = "Yoga classes"
+                        },
+                        new
+                        {
+                            ID = "post2",
+                            ServiceID = "dance_class1",
+                            Text = "Unfortunately I have to cancel today's dance class because I have COVID. :( See you guys next week!",
+                            Title = "TODAY'S CLASS IS CANCELED!"
+                        },
+                        new
+                        {
+                            ID = "post3",
+                            ServiceID = "nail_salon1",
+                            Text = "Hello guys, someone left their Gucci bag at my studio. Please come pick it up!",
+                            Title = "Gucci bag left at studio!!"
+                        },
+                        new
+                        {
+                            ID = "post4",
+                            ServiceID = "chiropractor1",
+                            Text = "Dear Guests, please make sure you don't make a mess after yourself when using the toilet at my office. I had to clean for hours after someone pooped there...",
+                            Title = "Someone clogged the toilet at my office..."
+                        });
                 });
 
             modelBuilder.Entity("sof_feleves.Models.Service", b =>
@@ -267,9 +352,13 @@ namespace sof_feleves.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<string>("Location")
+                        .HasColumnType("text");
+
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
                     b.HasKey("ID");
 
@@ -281,25 +370,33 @@ namespace sof_feleves.Migrations
                         new
                         {
                             ID = "yoga_class1",
+                            Description = "Yoga for your body and mind at the yoga studio with your yoga host",
                             HostID = "yoga_host1",
+                            Location = "Yoga Studio in Budapest",
                             Name = "Yoga class"
                         },
                         new
                         {
                             ID = "dance_class1",
+                            Description = "Contemporary dance class for creative minds",
                             HostID = "dance_host1",
+                            Location = "Dance Studio in Paris",
                             Name = "Dance class"
                         },
                         new
                         {
                             ID = "nail_salon1",
+                            Description = "Luxury Nail salon located in the heart of London<3",
                             HostID = "nail_host1",
+                            Location = "London Nail Salon",
                             Name = "Nail salon"
                         },
                         new
                         {
                             ID = "chiropractor1",
+                            Description = "Certified chiropractor - based in New York",
                             HostID = "chiropractor_host1",
+                            Location = "New York",
                             Name = "Chiropractor"
                         });
                 });
@@ -384,15 +481,15 @@ namespace sof_feleves.Migrations
                         {
                             Id = "yoga_host1",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "08320484-01c5-4a3c-98f4-0604ba21d561",
+                            ConcurrencyStamp = "1157d35e-c9df-43cf-8536-c444913d9e4b",
                             Email = "yoga@yoga.yoga",
                             EmailConfirmed = false,
                             FirstName = "Yoga",
                             LockoutEnabled = false,
                             NormalizedUserName = "YOGA",
-                            PasswordHash = "AQAAAAEAACcQAAAAEFx8emvX0qxV4BMnRpcf5bCt46BXk/iqzDPsngqOAFXF7whhsoe8uvnJTZv25kNM/g==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEHOqt7m2os98IwtQGah+ulmb6WrY/m9+bmEuoLn75APlHZ0LIjAnkpAOM7thfnUdDQ==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "90cca1d5-9832-43b9-9079-06f2511b43f0",
+                            SecurityStamp = "e1e9a5ce-cd27-4de5-8b2c-e768e9238883",
                             SurName = "Master",
                             TwoFactorEnabled = false
                         },
@@ -400,15 +497,15 @@ namespace sof_feleves.Migrations
                         {
                             Id = "dance_host1",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "5c328afe-e93b-4d06-a773-4d1531e96e99",
+                            ConcurrencyStamp = "21e9df3f-6963-44db-8d5d-f0358a89cdd1",
                             Email = "dance@dance.dance",
                             EmailConfirmed = false,
                             FirstName = "Dance",
                             LockoutEnabled = false,
                             NormalizedUserName = "DANCE",
-                            PasswordHash = "AQAAAAEAACcQAAAAEOdibugLjduVB+907Ir5+RyDl6VkIEbEzWrhUyGWiM7v2tRWFJcZNoyRhZDXLKUkSQ==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEA5VtketXWdub9LPK5iTDjpD7s4BHtcjCEU6FvIfFy246CXVqm6Xis80BUqPkKWcrA==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "a96dc764-8a16-418e-a588-e7f7bfe89fa1",
+                            SecurityStamp = "2d246b74-38e1-426c-b57d-d64f253c020d",
                             SurName = "Master",
                             TwoFactorEnabled = false
                         },
@@ -416,15 +513,15 @@ namespace sof_feleves.Migrations
                         {
                             Id = "nail_host1",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "93542f87-748d-405c-8835-1af96fcd1b8c",
+                            ConcurrencyStamp = "728d9d2b-9794-49d2-9a4d-31f214ec72d6",
                             Email = "nail@nail.nail",
                             EmailConfirmed = false,
                             FirstName = "Nail",
                             LockoutEnabled = false,
                             NormalizedUserName = "NAIL",
-                            PasswordHash = "AQAAAAEAACcQAAAAEPMVdoO5KABef1Z2c5ZzM+lBR8TwGnM1lppyGTufDXXdG6i0uiQyZ1lsCUrmWIe3HA==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEGsBauVu4sEoNXz1wympsdXBHbyjxwXgex0JI7GGDduhYsSp4rEuyAue5oR4P2HIyg==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "ebadb899-ffb1-4e48-a1db-02c5ad0eb3b1",
+                            SecurityStamp = "db885e7f-2f4a-4d10-bbd1-83b5f8c3b47c",
                             SurName = "Master",
                             TwoFactorEnabled = false
                         },
@@ -432,15 +529,15 @@ namespace sof_feleves.Migrations
                         {
                             Id = "chiropractor_host1",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "d042779a-3003-470b-9a11-610f145ea8d6",
+                            ConcurrencyStamp = "a0da8bb6-0d6d-45aa-a050-27102a87cfb3",
                             Email = "chiropractor@chiropractor.chiropractor",
                             EmailConfirmed = false,
                             FirstName = "Chiropractor",
                             LockoutEnabled = false,
                             NormalizedUserName = "CHIROPRACTOR",
-                            PasswordHash = "AQAAAAEAACcQAAAAEHVJrIpCP6OyN6A3juSrHxP3N6X0Pd8asqK8ymyoYXFIOmdyk5ExT1W9OhJW6ATLeg==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEGEx6hR+7PBpnNOCLAEW1yAyeSlakjVWt+XZcRpq2g/5QhZK/YyZTdGZherJi0tokw==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "944a902d-4314-4e3b-b3f3-d928e97f76b4",
+                            SecurityStamp = "83284fcb-5900-41ef-bec7-1d7ddb959462",
                             SurName = "Master",
                             TwoFactorEnabled = false
                         });

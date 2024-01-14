@@ -42,11 +42,27 @@ namespace sof_feleves.Repository
 
 
             builder.Entity<Service>().HasData(
-                new Service { ID = "yoga_class1", HostID = "yoga_host1", Name = "Yoga class" },
-                new Service { ID = "dance_class1", HostID = "dance_host1", Name = "Dance class" },
-                new Service { ID = "nail_salon1", HostID = "nail_host1", Name = "Nail salon" },
-                new Service { ID = "chiropractor1", HostID = "chiropractor_host1", Name = "Chiropractor" }
+                new Service { ID = "yoga_class1", HostID = "yoga_host1", Name = "Yoga class", Description = "Yoga for your body and mind at the yoga studio with your yoga host", Location = "Yoga Studio in Budapest" },
+                new Service { ID = "dance_class1", HostID = "dance_host1", Name = "Dance class", Description = "Contemporary dance class for creative minds", Location = "Dance Studio in Paris" },
+                new Service { ID = "nail_salon1", HostID = "nail_host1", Name = "Nail salon", Description = "Luxury Nail salon located in the heart of London<3", Location = "London Nail Salon" },
+                new Service { ID = "chiropractor1", HostID = "chiropractor_host1", Name = "Chiropractor", Description = "Certified chiropractor - based in New York", Location = "New York" }
                 );
+
+            builder.Entity<Appointment>().HasData(
+                new Appointment { ID = "apt1", Date = DateTime.SpecifyKind(new DateTime(2025, 06, 28, 10, 0, 0), DateTimeKind.Utc), MaxApplicants = 10, ServiceID = "yoga_class1" },
+                new Appointment { ID = "apt2", Date = DateTime.SpecifyKind(new DateTime(2025, 06, 28, 12, 0, 0), DateTimeKind.Utc), MaxApplicants = 10, ServiceID = "yoga_class1" },
+                new Appointment { ID = "apt3", Date = DateTime.SpecifyKind(new DateTime(2025, 05, 05, 13, 30, 0), DateTimeKind.Utc), MaxApplicants = 1, ServiceID = "nail_salon1" },
+                new Appointment { ID = "apt4", Date = DateTime.SpecifyKind(new DateTime(2025, 07, 28, 19, 0, 0), DateTimeKind.Utc), MaxApplicants = 25, ServiceID = "dance_class1" },
+                new Appointment { ID = "apt5", Date = DateTime.SpecifyKind(new DateTime(2025, 07, 29, 19, 0, 0), DateTimeKind.Utc), MaxApplicants = 25, ServiceID = "dance_class1" },
+                new Appointment { ID = "apt6", Date = DateTime.SpecifyKind(new DateTime(2025, 08, 28, 19, 0, 0), DateTimeKind.Utc), MaxApplicants = 25, ServiceID = "dance_class1" }
+                );
+
+            builder.Entity<Post>().HasData(
+               new Post { ID = "post1", Text = "Yoga for your body and mind at the yoga studio with your yoga host", ServiceID = "yoga_class1", Title = "Yoga classes"},
+               new Post { ID = "post2", Text = "Unfortunately I have to cancel today's dance class because I have COVID. :( See you guys next week!", ServiceID = "dance_class1", Title = "TODAY'S CLASS IS CANCELED!"},
+               new Post { ID = "post3", Text = "Hello guys, someone left their Gucci bag at my studio. Please come pick it up!", ServiceID = "nail_salon1", Title = "Gucci bag left at studio!!" },
+               new Post { ID = "post4", Text = "Dear Guests, please make sure you don't make a mess after yourself when using the toilet at my office. I had to clean for hours after someone pooped there...", ServiceID = "chiropractor1", Title = "Someone clogged the toilet at my office..."}
+               );
 
             builder.Entity<Appointment>()
                 .Property(a => a.Date)

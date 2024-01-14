@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
@@ -7,6 +8,7 @@ using sof_feleves.Models;
 using sof_feleves.Repository;
 using sof_feleves.Repository.Repositories;
 using sof_feleves.Services;
+using System.Security.Claims;
 
 var builder = WebApplication.CreateBuilder(args);
 
