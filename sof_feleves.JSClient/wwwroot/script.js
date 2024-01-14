@@ -17,7 +17,7 @@
             .configureLogging(signalR.LogLevel.Information)
             .build();
 
-        connection.on("servicecreated", (user, message) => {
+        connection.on("servicecountchanged", (user, message) => {
             getData();
         });
         connection.on("useradded", (user, message) => {

@@ -66,7 +66,7 @@ namespace sof_feleves.Controllers
             try
             {
                 _serviceLogic.Create(service);
-                await _hub.Clients.All.SendAsync("ServiceCreated", new { ID = service.ID, Name = service.Name, Location = service.Location, HostName = $"{service.Host.FirstName} {service.Host.SurName}" });
+                await _hub.Clients.All.SendAsync("ServiceCountChanged", new { ID = service.ID, Name = service.Name, Location = service.Location, HostName = $"{service.Host.FirstName} {service.Host.SurName}" });
             }
             catch (ArgumentException ex)
             {
@@ -77,9 +77,10 @@ namespace sof_feleves.Controllers
         }
 
         [HttpGet]
-        public IActionResult DeleteService(string id)
+        public async Task<IActionResult> DeleteService(string id)
         {
             _serviceLogic.Delete(id);
+            await _hub.Clients.All.SendAsync("ServiceCountChanged", id );
             return RedirectToAction(nameof(HostDashboard));
         }
 
