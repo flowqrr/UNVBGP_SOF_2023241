@@ -153,10 +153,6 @@ namespace sof_feleves.Areas.Identity.Pages.Account
                         _logger.LogInformation("User added to Host role.");
                         await _hub.Clients.All.SendAsync("HostAdded", user.Id);
                     }
-                    else
-                    {
-                        await _hub.Clients.All.SendAsync("GuestAdded", user.Id);
-                    }
 
                     var userId = await _userManager.GetUserIdAsync(user);
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);

@@ -22,6 +22,8 @@ using Castle.Core.Internal;
 using Microsoft.CodeAnalysis;
 using Newtonsoft.Json;
 using System.Net;
+using Microsoft.AspNetCore.SignalR;
+using sof_feleves.Other;
 
 namespace sof_feleves.Areas.Identity.Pages.Account
 {
@@ -34,13 +36,15 @@ namespace sof_feleves.Areas.Identity.Pages.Account
         private readonly IUserEmailStore<SiteUser> _emailStore;
         private readonly IEmailSender _emailSender;
         private readonly ILogger<ExternalLoginModel> _logger;
+        private readonly IHubContext<SignalRHub> _hub;
 
         public ExternalLoginModel(
             SignInManager<SiteUser> signInManager,
             UserManager<SiteUser> userManager,
             IUserStore<SiteUser> userStore,
             ILogger<ExternalLoginModel> logger,
-            IEmailSender emailSender)
+            IEmailSender emailSender,
+            IHubContext<SignalRHub> hub)
         {
             _signInManager = signInManager;
             _userManager = userManager;
@@ -48,6 +52,7 @@ namespace sof_feleves.Areas.Identity.Pages.Account
             _emailStore = GetEmailStore();
             _logger = logger;
             _emailSender = emailSender;
+            _hub = hub;
         }
 
         /// <summary>
@@ -242,10 +247,12 @@ namespace sof_feleves.Areas.Identity.Pages.Account
                     if (result.Succeeded)
                     {
                         _logger.LogInformation("User created an account using {Name} provider.", info.LoginProvider);
+                        await _hub.Clients.All.SendAsync("UserAdded", user.Id);
 
                         if (Input.IsHost)
                         {
                             await _userManager.AddToRoleAsync(user, "Host");
+                            await _hub.Clients.All.SendAsync("HostAdded", user.Id);
                         }
 
                         var userId = await _userManager.GetUserIdAsync(user);
